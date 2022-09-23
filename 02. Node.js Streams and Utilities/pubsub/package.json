@@ -1,0 +1,20 @@
+{
+  "name": "pubsub",
+  "version": "1.0.0",
+  "description": "Publish subscribe pattern demo",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/index.js",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
+  },
+  "author": "Zdravko Zdravkov",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.7.18",
+    "concurrently": "^7.4.0",
+    "nodemon": "^2.0.20",
+    "typescript": "^4.8.3"
+  }
+}

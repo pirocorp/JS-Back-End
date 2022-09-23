@@ -1,0 +1,13 @@
+dist
+node_modules
+>>> demo.txt
+>>> eventObserver.ts
+>>> fs-demo.ts
+>>> index.ts
+>>> module1.ts
+>>> module2.ts
+>>> module3.ts
+>>> observer.ts
+>>> package-lock.json
+>>> package.json
+>>> tsconfig.json
