@@ -1,0 +1,45 @@
+body {    
+    background-color: #DDD;
+}
+
+#content {
+    background-color: white;
+    width: 980px;
+    margin: auto;
+}
+
+nav {
+    background-color: #CCC;
+    padding: 8px;
+}
+
+nav ul {
+    list-style: none;
+}
+
+nav ul li {
+    display: inline-block;
+}
+
+nav a {
+    text-decoration: none;
+    background-color: cadetblue;
+    padding: 4px 8px;
+    color: white;
+}
+
+nav a:hover {
+    background-color: blue;
+}
+
+main {
+    padding: 32px;
+}
+
+form label {
+    margin-left: 5px;
+}
+
+form input {
+    padding: 5px;
+}

@@ -1,0 +1,13 @@
+<h1>Product Details</h1>
+
+{{#if product}}
+    {{#with product}}
+        <h2>Name: {{name}}</h2>
+        <p>Price: ${{price}}</p>
+        <p>            
+            <a href="/delete/{{id}}">Delete</a>
+        </p>
+    {{/with}}
+{{else}}
+    <p><i>Product with id: {{productId}} not found.</i> Return to <a href="/catalog">Catalog</a></p>
+{{/if}}
