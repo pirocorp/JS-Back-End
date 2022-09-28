@@ -1,11 +1,16 @@
 import { Router } from 'express';
 
+import * as accomodationService from '../services/accomodationService';
+
 const router = Router();
 
 router.get('/', (req, res) => {
+    const rooms = accomodationService.getAll();
+
     const payload = {
-        title: 'All accomodation'
-    }
+        title: 'All accomodations',
+        rooms,
+    };
 
     res.render('./catalog/index', payload);
 });

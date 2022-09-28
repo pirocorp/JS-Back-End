@@ -1,5 +1,7 @@
 import { Router } from 'express';
 
+import * as accomodationService from '../services/accomodationService';
+
 const router = Router();
 
 router.get('/create', (req, res) => {
@@ -16,11 +18,20 @@ router.post('/create', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
+    const roomId = req.params.id;
+    const room = accomodationService.getById(roomId);
+
     const payload = {
-        title: 'Accomodation Details'
+        title: 'Accomodation Details',
+        room,
+        roomId,
     }
 
-    res.render('./accomodation/details', payload);
+    if(room){
+        res.render('./accomodation/details', payload);
+    }else{
+        res.render('./accomodation/roomNotFound', payload)
+    }    
 });
 
 export default router;

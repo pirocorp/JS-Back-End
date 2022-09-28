@@ -5,9 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/static/site.css">
 </head>
 <body>
-    {{{body}}}
+    <div id="page-content">
+        <header>
+            <a href="/" class="title-logo">
+                <img src="/static/assets/logo.png">
+                <span>Sleepover</span>
+            </a>
+            <nav class="main-nav nav-mid">
+                <ul>
+                    <li><a href="/catalog">Catalog</a></li>
+                    <li><a href="/create">Host</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            {{{body}}}
+        </main>
+        <footer>
+            <span>Zdravko Zdravkov &copy; 2022</span>
+        </footer>
+    </div>    
 </body>
 </html>
