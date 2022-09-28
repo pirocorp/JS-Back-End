@@ -8,16 +8,16 @@ function parseImage(data) {
         return null;
     }
     const fileData = getFileData(body);
-    //const fileData = '';
     if (fileData == null) {
         return null;
     }
     return {
-        fileName: fileName.trim(),
-        fileData: fileData.trim()
+        name: fileName.trim(),
+        data: fileData.trim()
     };
 }
 exports.parseImage = parseImage;
+;
 function getFilename(body) {
     const pattern = /filename="(.+)"/;
     const matches = pattern.exec(body);
@@ -27,6 +27,7 @@ function getFilename(body) {
     const fileName = matches[1];
     return fileName;
 }
+;
 function getFileData(body) {
     const lineIndex = body.indexOf('\n');
     const divider = body.slice(0, lineIndex).trim();
@@ -43,4 +44,5 @@ function getFileData(body) {
     const file = fileData.slice(match.index);
     return file;
 }
+;
 //# sourceMappingURL=imageParser.js.map

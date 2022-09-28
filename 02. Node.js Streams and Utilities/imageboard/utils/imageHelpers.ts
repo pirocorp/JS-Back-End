@@ -1,4 +1,28 @@
+import { IncomingMessage } from "http";
+import { promises as fs } from "fs";
+
 import { IImageFile } from "../interfaces/IImageFile";
+
+export function uploadImage(req: IncomingMessage) {
+    const data: Buffer[] = [];
+
+    return new Promise<IImageFile>((resolve, reject) => {
+        req.on('data', chunk => data.push(chunk.toString('binary')));
+        req.on('end', async () => {
+            const file = parseImage(data);
+
+            if(file == null){
+                reject();
+                return
+            }
+
+            const prefix = ('00000' + (Math.random() * 9999999 | 0)).slice(-5);
+            await fs.writeFile(`./static/img/${prefix}-${file.name}`, file.data, 'binary');
+
+            resolve(file);
+        });
+    });
+};
 
 export function parseImage(data: Buffer[]): IImageFile | null {
     const body = data.join('');
@@ -9,18 +33,16 @@ export function parseImage(data: Buffer[]): IImageFile | null {
     }
 
     const fileData = getFileData(body);
-
-    //const fileData = '';
     
     if(fileData == null){
         return null;
     }
 
     return {
-        fileName: fileName.trim(),
-        fileData: fileData.trim()
+        name: fileName.trim(),
+        data: fileData.trim()
     }
-}
+};
 
 function getFilename(body: string) {
     const pattern = /filename="(.+)"/;
@@ -32,7 +54,7 @@ function getFilename(body: string) {
 
     const fileName = matches[1];
     return fileName;
-}
+};
 
 function getFileData(body: string) {
     const lineIndex = body.indexOf('\n');
@@ -55,4 +77,4 @@ function getFileData(body: string) {
 
     const file = fileData.slice(match.index);
     return file;
-}
+};

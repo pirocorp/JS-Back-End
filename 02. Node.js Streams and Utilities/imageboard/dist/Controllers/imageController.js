@@ -9,26 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createImage = void 0;
-const fs_1 = require("fs");
+exports.uploadImage = void 0;
 const redirectResponse_1 = require("../http/responses/redirectResponse");
-const imageParser_1 = require("../utils/imageParser");
-function createImage(req, res) {
+const imageHelpers_1 = require("../utils/imageHelpers");
+function uploadImage(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const data = [];
-        req.on('data', chunk => data.push(chunk));
-        req.on('end', () => __awaiter(this, void 0, void 0, function* () {
-            const file = (0, imageParser_1.parseImage)(data);
-            if (file == null) {
-                (0, redirectResponse_1.redirectResponse)('/', res);
-                return;
-            }
-            const prefix = ('00000' + (Math.random() * 9999999 | 0)).slice(-5);
-            yield fs_1.promises.writeFile(`./static/img/${prefix}-${file.fileName}`, file.fileData, 'utf8');
-            (0, redirectResponse_1.redirectResponse)('/', res);
-        }));
+        const file = yield (0, imageHelpers_1.uploadImage)(req);
+        (0, redirectResponse_1.redirectResponse)('/', res);
     });
 }
-exports.createImage = createImage;
+exports.uploadImage = uploadImage;
 ;
 //# sourceMappingURL=imageController.js.map

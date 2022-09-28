@@ -33,7 +33,7 @@ const imageController_1 = require("./controllers/imageController");
 (() => {
     router.register('/', httpMethod_1.HttpMethod.GET, boardController_1.homePage);
     router.register('/home', httpMethod_1.HttpMethod.GET, boardController_1.homePage);
-    router.register('/upload', httpMethod_1.HttpMethod.POST, imageController_1.createImage);
+    router.register('/upload', httpMethod_1.HttpMethod.POST, imageController_1.uploadImage);
 })();
 const server = (0, http_1.createServer)(main_1.handleRequest);
 server.listen(3000);

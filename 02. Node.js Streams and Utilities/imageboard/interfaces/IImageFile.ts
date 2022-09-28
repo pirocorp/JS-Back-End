@@ -1,4 +1,4 @@
 export interface IImageFile{
-    fileName: string,
-    fileData: string
-}
+    name: string,
+    data: string
+};
