@@ -1,6 +1,8 @@
 import express from 'express';
 import { create } from 'express-handlebars';
 
+import homeController from './controllers/homeController';
+
 const port = 3000;
 const host = "pirocorp.com"
 
@@ -23,4 +25,8 @@ app.use(express.urlencoded({
     extended: true
 }));
 
+// Register controllers
+app.use(homeController);
+
+// start the app
 app.listen(port, host, () => console.log(`Server listening on port ${host}:${port}`));
