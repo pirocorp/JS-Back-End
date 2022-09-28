@@ -33,3 +33,9 @@ textarea {
     width: 100%;
     resize: vertical;
 }
+
+input.padded {
+    padding: 5px 10px;
+    border: 1px solid;
+    border-radius: 5px;
+}

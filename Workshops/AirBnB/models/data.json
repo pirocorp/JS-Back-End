@@ -1,10 +1,1 @@
-[
-    {
-        "id": "1234",
-        "name": "Double Room",
-        "description": "Nice and cozy",
-        "city": "Bansko",
-        "beds": 2,
-        "price": 130
-    }
-]
+[{"id":"1234","name":"Double Room","description":"Nice and cozy","city":"Bansko","beds":2,"price":130,"imageUrl":"/static/assets/room1.jpg"},{"id":"07f649","name":"Standard Double Room","description":"Standard Double Room in Strombeek-Bever","city":"Strombeek-Bever","beds":2,"price":150,"imageUrl":"/static/assets/room2.jpg"}]

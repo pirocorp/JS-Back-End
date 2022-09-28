@@ -1,7 +1,17 @@
-<li>
-    <strong>{{name}} - {{price}}€</strong>
-    <p>{{description}}</p>
-    <p>
-        <a href="/accomodation/{{id}}">Details</a>
-    </p>
+<li class="item">
+    <header class="pad-med">
+        <h2 class="heading">{{name}}</h2>
+    </header>
+
+    <main class="align-center">
+
+        <img class="img-thumb" src="{{imageUrl}}">
+
+    </main>
+
+    <footer class="align-center pad-med">
+        <p>Location: <strong>{{city}}</strong></p>
+        <p>Price: <strong>{{price}}€</strong></p>
+        <a class="action" href="/accommodation/{{id}}">See details</a>
+    </footer>
 </li>

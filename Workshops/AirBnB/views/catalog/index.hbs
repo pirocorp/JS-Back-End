@@ -1,10 +1,52 @@
-<section>
-    <h1>{{title}}</h1>
-    <div>
-        <ul>
-            {{#each rooms}}
-            {{> roomCard}}
-            {{/each}}
-        </ul>
+<section id="catalog-section" class="spaced">
+
+    <h1 class="item">Accomodation</h1>
+
+    <div class="item pad-med align-center">
+        <form class="layout left large" method="get">
+            <div class="col aligned">
+                <label>
+                    <span>Location</span>
+                    <input class="padded" name="city" value="{{city}}">
+                </label>
+                <label>
+                    <span>Terms</span>
+                    <input class="padded" name="search" value="{{search}}">
+                </label>
+            </div>
+            <div class="col aligned">
+                <label>
+                    <span>From price</span>
+                    <input class="padded" type="number" name="fromPrice" min="1" max="1000" value="{{fromPrice}}">
+                </label>
+                <label>
+                    <span>To price</span>
+                    <input class="padded" type="number" name="toPrice" min="1" max="1000"value="{{toPrice}}">
+                </label>
+            </div>
+            <div class="spaced">
+                <input class="action btn-big" type="submit" value="Search" style="margin-bottom: 16px;">
+            </div>
+        </form>
     </div>
+
+    {{#if rooms}}
+
+    <ul class="catalog cards">
+        {{#each rooms}}
+        {{> roomCard}}
+        {{/each}}
+    </ul>
+
+    {{else}}
+
+    <main class="item pad-large align-center">
+        <p>Nothing has been listed yet. Be the first!</p>
+        <div>
+            <a class="action" href="/create">Host Accomodation</a>
+        </div>
+    </main>
+
+    {{/if}}
+
 </section>

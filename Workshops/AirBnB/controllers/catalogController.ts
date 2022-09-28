@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import * as accomodationService from '../services/accomodationService';
+import * as accomodationService from '../services/accommodationService';
 
 const router = Router();
 

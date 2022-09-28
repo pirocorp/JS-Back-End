@@ -53,6 +53,7 @@
     box-shadow: var(--shadow);
     border-radius: var(--round);
     overflow: hidden;
+    border-radius: 5px;
 }
 
 .padded>* {
@@ -71,6 +72,7 @@ p {
     padding: 8px 16px;
     margin: 4px 8px;
     text-decoration: none;
+    border-radius: 5px;
 }
 
 .cta {
@@ -78,4 +80,12 @@ p {
     margin-left: auto;
     margin-right: auto;
     width: 200px;
+}
+
+.btn-big {
+    padding: 5px 32px;
+}
+
+.item .heading{
+    padding-top: 10px;
 }

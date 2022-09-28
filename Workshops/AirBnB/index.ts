@@ -3,7 +3,7 @@ import { create } from 'express-handlebars';
 
 import homeController from './controllers/homeController';
 import catalogController from './controllers/catalogController';
-import accomodationController from './controllers/accomodationController';
+import accommodationController from './controllers/accommodationController';
 import { notFound } from './controllers/defaultController';
 import { defaultTitle } from './middlewares/defaultTitle';
 
@@ -25,7 +25,7 @@ app.set('views', './views');
 // static files middleware (urlPath, rootFolder);
 app.use('/static', express.static('./static'));
 
-// middleware for parsing form data adds body in the req object
+// middleware for parsing form data adds body in the req.body object
 app.use(express.urlencoded({
     extended: true
 }));
@@ -36,7 +36,7 @@ app.use(defaultTitle(appTitle));
 // Register controllers
 app.use(homeController);
 app.use('/catalog', catalogController);
-app.use('/accomodation', accomodationController);
+app.use('/accommodation', accommodationController);
 
 // Not found page
 app.all('*', notFound);
