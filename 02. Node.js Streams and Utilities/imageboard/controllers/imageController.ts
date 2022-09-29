@@ -16,6 +16,7 @@ export async function uploadImage(
         return
     }    
 
+    // Maybe we should extract it in middleware for dealing with files.
     const boundary = tokens![1].trim();
     const data: Buffer[] = [];   
 

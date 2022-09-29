@@ -1,9 +1,7 @@
 import { promises as fs } from "fs";
-
 import { IImageFile } from "../interfaces/IImageFile";
 
-export async function uploadImage(data: Buffer[], boundary: string){
-    
+export async function uploadImage(data: Buffer[], boundary: string){    
     const file = parseImage(data, boundary!);
 
     if(file == null){
