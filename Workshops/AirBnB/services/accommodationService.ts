@@ -30,17 +30,15 @@ export function getAll(input?: IAccomodationSearchDTO) {
         return data;
     }
 
-    const searchTerm = input?.search ?? '';
-    const city = input?.city ?? '';
+    const searchTerm = (input?.search ?? '').toLowerCase();
+    const city = (input?.city ?? '').toLowerCase();
     const fromPrice = Number(input?.fromPrice) || 1;
     const toPrice = Number(input?.toPrice) || 1000000000;
 
     const result = data
-        .filter(r => 
-            r.name.toLowerCase().includes(searchTerm.toLowerCase())
-            && r.city.toLowerCase().includes(city.toLowerCase())
-            && r.price >= fromPrice && r.price <= toPrice
-        );
+        .filter(r => r.name.toLowerCase().includes(searchTerm) || r.description.toLowerCase().includes(searchTerm))
+        .filter(r => r.city.toLowerCase().includes(city))
+        .filter(r => r.price >= fromPrice && r.price <= toPrice);
 
     return result;
 };
