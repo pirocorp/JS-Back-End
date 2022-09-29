@@ -14,7 +14,12 @@ const redirectResponse_1 = require("../http/responses/redirectResponse");
 const imageHelpers_1 = require("../utils/imageHelpers");
 function uploadImage(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const file = yield (0, imageHelpers_1.uploadImage)(req);
+        try {
+            const file = yield (0, imageHelpers_1.uploadImage)(req);
+        }
+        catch (error) {
+            console.error(error);
+        }
         (0, redirectResponse_1.redirectResponse)('/', res);
     });
 }

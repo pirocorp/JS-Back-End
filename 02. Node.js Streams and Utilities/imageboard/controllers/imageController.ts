@@ -9,6 +9,11 @@ export async function uploadImage(
         req: IncomingMessage;
     }
 ){
-    const file = await imageUpload(req);
+    try {
+        const file = await imageUpload(req);
+    } catch (error) {
+        console.error(error);
+    }
+
     redirectResponse('/', res);  
 };

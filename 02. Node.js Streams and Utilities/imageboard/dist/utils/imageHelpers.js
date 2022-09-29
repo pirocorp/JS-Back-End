@@ -12,11 +12,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseImage = exports.uploadImage = void 0;
 const fs_1 = require("fs");
 function uploadImage(req) {
+    var _a;
     const data = [];
+    const tokens = (_a = req.headers['content-type']) === null || _a === void 0 ? void 0 : _a.split('boundary=');
+    let boundry = null;
+    if (tokens && tokens.length >= 2) {
+        boundry = tokens[1].trim();
+    }
     return new Promise((resolve, reject) => {
+        if (boundry == null) {
+            reject();
+            return;
+        }
         req.on('data', chunk => data.push(chunk.toString('binary')));
         req.on('end', () => __awaiter(this, void 0, void 0, function* () {
-            const file = parseImage(data);
+            const file = parseImage(data, boundry);
             if (file == null) {
                 reject();
                 return;
@@ -29,13 +39,13 @@ function uploadImage(req) {
 }
 exports.uploadImage = uploadImage;
 ;
-function parseImage(data) {
+function parseImage(data, boundry) {
     const body = data.join('');
     const fileName = getFilename(body);
     if (fileName == null) {
         return null;
     }
-    const fileData = getFileData(body);
+    const fileData = getFileData(body, boundry);
     if (fileData == null) {
         return null;
     }
@@ -46,9 +56,9 @@ function parseImage(data) {
 }
 exports.parseImage = parseImage;
 ;
-function getFilename(body) {
+function getFilename(data) {
     const pattern = /filename="(.+)"/;
-    const matches = pattern.exec(body);
+    const matches = pattern.exec(data);
     if (matches === null || matches.length < 2) {
         return null;
     }
@@ -56,10 +66,9 @@ function getFilename(body) {
     return fileName;
 }
 ;
-function getFileData(body) {
+function getFileData(body, boundry) {
     const lineIndex = body.indexOf('\n');
-    const divider = body.slice(0, lineIndex).trim();
-    const fileData = body.slice(lineIndex, body.indexOf(divider, lineIndex));
+    const fileData = body.slice(lineIndex, body.indexOf(boundry, lineIndex));
     const windowsPattern = /\r\n\r\n/;
     const linuxPattern = /\n\n/;
     let match = windowsPattern.exec(fileData);

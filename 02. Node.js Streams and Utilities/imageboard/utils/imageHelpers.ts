@@ -3,13 +3,24 @@ import { promises as fs } from "fs";
 
 import { IImageFile } from "../interfaces/IImageFile";
 
-export function uploadImage(req: IncomingMessage) {
+export function uploadImage(req: IncomingMessage){
     const data: Buffer[] = [];
+    const tokens: string[] | undefined = req.headers['content-type']?.split('boundary=');
+    let boundary: string | null = null;
+
+    if(tokens && tokens.length >= 2){
+        boundary = tokens[1].trim();
+    }   
 
     return new Promise<IImageFile>((resolve, reject) => {
+        if(boundary == null){
+            reject();
+            return
+        }
+
         req.on('data', chunk => data.push(chunk.toString('binary')));
         req.on('end', async () => {
-            const file = parseImage(data);
+            const file = parseImage(data, boundary!);
 
             if(file == null){
                 reject();
@@ -24,7 +35,10 @@ export function uploadImage(req: IncomingMessage) {
     });
 };
 
-export function parseImage(data: Buffer[]): IImageFile | null {
+export function parseImage(
+    data: Buffer[], 
+    boundry: string
+): IImageFile | null {
     const body = data.join('');
     const fileName = getFilename(body);
 
@@ -32,7 +46,7 @@ export function parseImage(data: Buffer[]): IImageFile | null {
         return null;
     }
 
-    const fileData = getFileData(body);
+    const fileData = getFileData(body, boundry);
     
     if(fileData == null){
         return null;
@@ -44,9 +58,9 @@ export function parseImage(data: Buffer[]): IImageFile | null {
     }
 };
 
-function getFilename(body: string) {
+function getFilename(data: string){
     const pattern = /filename="(.+)"/;
-    const matches = pattern.exec(body);
+    const matches = pattern.exec(data);
 
     if(matches === null || matches.length < 2){
         return null;
@@ -56,11 +70,9 @@ function getFilename(body: string) {
     return fileName;
 };
 
-function getFileData(body: string) {
+function getFileData(body: string, boundary: string){
     const lineIndex = body.indexOf('\n');
-    const divider = body.slice(0, lineIndex).trim();
-
-    const fileData = body.slice(lineIndex, body.indexOf(divider, lineIndex));
+    const fileData = body.slice(lineIndex, body.indexOf(boundary, lineIndex));
 
     const windowsPattern = /\r\n\r\n/;
     const linuxPattern = /\n\n/;
