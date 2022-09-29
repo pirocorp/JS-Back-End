@@ -13,14 +13,25 @@ exports.uploadImage = void 0;
 const redirectResponse_1 = require("../http/responses/redirectResponse");
 const imageHelpers_1 = require("../utils/imageHelpers");
 function uploadImage(req, res) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const file = yield (0, imageHelpers_1.uploadImage)(req);
+        const tokens = (_a = req.headers['content-type']) === null || _a === void 0 ? void 0 : _a.split('boundary=');
+        if (!tokens || tokens.length < 2) {
+            (0, redirectResponse_1.redirectResponse)('/', res);
+            return;
         }
-        catch (error) {
-            console.error(error);
-        }
-        (0, redirectResponse_1.redirectResponse)('/', res);
+        const boundary = tokens[1].trim();
+        const data = [];
+        req.on('data', chunk => data.push(chunk.toString('binary')));
+        req.on('end', () => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const file = yield (0, imageHelpers_1.uploadImage)(data, boundary);
+            }
+            catch (error) {
+                console.error(error);
+            }
+            (0, redirectResponse_1.redirectResponse)('/', res);
+        }));
     });
 }
 exports.uploadImage = uploadImage;

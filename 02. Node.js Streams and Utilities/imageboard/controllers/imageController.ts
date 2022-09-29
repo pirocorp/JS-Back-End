@@ -9,11 +9,25 @@ export async function uploadImage(
         req: IncomingMessage;
     }
 ){
-    try {
-        const file = await imageUpload(req);
-    } catch (error) {
-        console.error(error);
-    }
+    const tokens = req.headers['content-type']?.split('boundary=');    
 
-    redirectResponse('/', res);  
+    if(!tokens || tokens.length < 2){
+        redirectResponse('/', res);  
+        return
+    }    
+
+    const boundary = tokens![1].trim();
+    const data: Buffer[] = [];   
+
+    req.on('data', chunk => data.push(chunk.toString('binary')));
+
+    req.on('end', async () => {
+        try {
+            const file = await imageUpload(data, boundary);
+        } catch (error) {
+            console.error(error);
+        }
+    
+        redirectResponse('/', res);  
+    });
 };

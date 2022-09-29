@@ -11,30 +11,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseImage = exports.uploadImage = void 0;
 const fs_1 = require("fs");
-function uploadImage(req) {
-    var _a;
-    const data = [];
-    const tokens = (_a = req.headers['content-type']) === null || _a === void 0 ? void 0 : _a.split('boundary=');
-    let boundry = null;
-    if (tokens && tokens.length >= 2) {
-        boundry = tokens[1].trim();
-    }
-    return new Promise((resolve, reject) => {
-        if (boundry == null) {
-            reject();
-            return;
+function uploadImage(data, boundary) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const file = parseImage(data, boundary);
+        if (file == null) {
+            return null;
         }
-        req.on('data', chunk => data.push(chunk.toString('binary')));
-        req.on('end', () => __awaiter(this, void 0, void 0, function* () {
-            const file = parseImage(data, boundry);
-            if (file == null) {
-                reject();
-                return;
-            }
-            const prefix = ('00000' + (Math.random() * 9999999 | 0)).slice(-5);
-            yield fs_1.promises.writeFile(`./static/img/${prefix}-${file.name}`, file.data, 'binary');
-            resolve(file);
-        }));
+        const prefix = ('00000' + (Math.random() * 9999999 | 0)).slice(-5);
+        yield fs_1.promises.writeFile(`./static/img/${prefix}-${file.name}`, file.data, 'binary');
+        return file;
     });
 }
 exports.uploadImage = uploadImage;
@@ -66,9 +51,9 @@ function getFilename(data) {
     return fileName;
 }
 ;
-function getFileData(body, boundry) {
+function getFileData(body, boundary) {
     const lineIndex = body.indexOf('\n');
-    const fileData = body.slice(lineIndex, body.indexOf(boundry, lineIndex));
+    const fileData = body.slice(lineIndex, body.indexOf(boundary, lineIndex));
     const windowsPattern = /\r\n\r\n/;
     const linuxPattern = /\n\n/;
     let match = windowsPattern.exec(fileData);

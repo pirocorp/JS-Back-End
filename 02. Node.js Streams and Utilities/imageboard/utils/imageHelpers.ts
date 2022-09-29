@@ -1,38 +1,19 @@
-import { IncomingMessage } from "http";
 import { promises as fs } from "fs";
 
 import { IImageFile } from "../interfaces/IImageFile";
 
-export function uploadImage(req: IncomingMessage){
-    const data: Buffer[] = [];
-    const tokens: string[] | undefined = req.headers['content-type']?.split('boundary=');
-    let boundary: string | null = null;
+export async function uploadImage(data: Buffer[], boundary: string){
+    
+    const file = parseImage(data, boundary!);
 
-    if(tokens && tokens.length >= 2){
-        boundary = tokens[1].trim();
-    }   
+    if(file == null){
+        return null;
+    }
 
-    return new Promise<IImageFile>((resolve, reject) => {
-        if(boundary == null){
-            reject();
-            return
-        }
+    const prefix = ('00000' + (Math.random() * 9999999 | 0)).slice(-5);
+    await fs.writeFile(`./static/img/${prefix}-${file.name}`, file.data, 'binary');
 
-        req.on('data', chunk => data.push(chunk.toString('binary')));
-        req.on('end', async () => {
-            const file = parseImage(data, boundary!);
-
-            if(file == null){
-                reject();
-                return
-            }
-
-            const prefix = ('00000' + (Math.random() * 9999999 | 0)).slice(-5);
-            await fs.writeFile(`./static/img/${prefix}-${file.name}`, file.data, 'binary');
-
-            resolve(file);
-        });
-    });
+    return file;
 };
 
 export function parseImage(
