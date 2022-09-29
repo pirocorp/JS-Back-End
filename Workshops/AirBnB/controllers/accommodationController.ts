@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { CreateRoomFormModel } from '../models/Rooms/CreateRoomFormModel';
+import { ICreateRoomDTO } from '../interfaces/IRoom';
 
 import * as accommodationService from '../services/accommodationService';
 
@@ -7,7 +7,7 @@ const router = Router();
 
 router.get('/create', (req, res) => {
     const payload = {
-        title: 'Accomodation Form'
+        title: 'Host New Accomodation'
     }
 
     res.render('./accommodation/create', payload);
@@ -15,14 +15,15 @@ router.get('/create', (req, res) => {
 
 router.post('/create', async (req, res) => {
 
-    const roomData = req.body as CreateRoomFormModel;
+    const roomData = req.body as ICreateRoomDTO;
 
     try {
         const result = await accommodationService.create(roomData);
         res.redirect(`/accommodation/${result.id}`);
-    } catch (error) {
-        res.render('create', {
+    } catch (err: any) {
+        res.render('./accommodation/create', {
             title: 'Request Error',
+            error: err.message.split('\n')
         });
     }   
 });

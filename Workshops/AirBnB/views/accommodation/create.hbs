@@ -1,8 +1,16 @@
 <section>
-    <h1>Add Ner Accomodation</h1>
+    <h1>Add Ner Accommodation</h1>
+
+    {{#if error}}
+    <div class="error-box align-center">
+        {{#each error}}
+        <p>{{this}}</p>
+        {{/each }}
+    </div>
+    {{/if}}
 
     <div class="item padded align-center">
-        <form class="layout left large" action="/accomodation/create" method="post">
+        <form class="layout left large" action="/accommodation/create" method="post">
 
             <div class="col aligned">
                 <label for="name">

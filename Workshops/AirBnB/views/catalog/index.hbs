@@ -2,6 +2,7 @@
 
     <h1 class="item">Accomodation</h1>
 
+    {{#with search}}
     <div class="item pad-med align-center">
         <form class="layout left large" method="get">
             <div class="col aligned">
@@ -29,6 +30,7 @@
             </div>
         </form>
     </div>
+    {{/with}}
 
     {{#if rooms}}
 
