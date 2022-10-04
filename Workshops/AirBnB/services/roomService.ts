@@ -6,23 +6,31 @@ import { ICreateRoomDTO } from '../interfaces/IRoom';
 import { IAccomodationSearchDTO } from '../interfaces/IAccomodationSearchDTO';
 
 export async function getAll(input?: IAccomodationSearchDTO): Promise<IRoom[]> {  
-    const result = (await Room.find({}).lean()) as IRoom[];  
+    let query = Room.find({});  
 
-    // if(!input){
-    //     return data;
-    // }
+    if(input){
+        const searchTerm = (input?.search ?? '').toLowerCase();
+        const city = (input?.city ?? '').toLowerCase();
+        const fromPrice = Number(input?.fromPrice) || 1;
+        const toPrice = Number(input?.toPrice) || 1000000000;
 
-    // const searchTerm = (input?.search ?? '').toLowerCase();
-    // const city = (input?.city ?? '').toLowerCase();
-    // const fromPrice = Number(input?.fromPrice) || 1;
-    // const toPrice = Number(input?.toPrice) || 1000000000;
+        const searchRegex = new RegExp(searchTerm, 'i');
+        const cityRegex = new RegExp(city, 'i');
 
-    // const result = data
-    //     .filter(r => r.name.toLowerCase().includes(searchTerm) || r.description.toLowerCase().includes(searchTerm))
-    //     .filter(r => r.city.toLowerCase().includes(city))
-    //     .filter(r => r.price >= fromPrice && r.price <= toPrice);
+        // query = query
+        //     .regex('name', searchRegex)
+        //     .regex('city', cityRegex)
+        //     .where('price').gte(fromPrice).lte(toPrice);
 
-    return result;
+        query = query.find({
+            name: { $regex: searchRegex },
+            city: { $regex: cityRegex },
+            price: { $gte: fromPrice, $lte: toPrice }
+        });
+    }
+
+    const result = await query.lean();
+    return result as IRoom[];
 };
 
 export async function getById(id: string): Promise<IRoom | null>{
