@@ -1,0 +1,33 @@
+<section>
+    <h1>{{title}}</h1>
+
+    {{#if error}}
+    <div class="error-box align-center">
+        {{#each error}}
+        <p>{{this}}</p>
+        {{/each }}
+    </div>
+    {{/if}}
+
+    <div class="item padded align-center">
+        <form class="layout left large" action="/facility/create" method="post">
+
+            <div class="col aligned">
+                <label for="label">
+                    <span>Label</span>
+                    <input class="padded" type="text" name="label" id="label" />
+                </label>
+                <label for="iconUrl">
+                    <span>Icon Url</span>
+                    <input class="padded" type="text" name="iconUrl" id="iconUrl" />
+                </label>
+            </div>
+
+            <div class="content pad-med align-center vertical pt-20 ">
+                <div class="align-center">
+                    <input class="action btn-big" type="submit" value="Create Facility"/>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

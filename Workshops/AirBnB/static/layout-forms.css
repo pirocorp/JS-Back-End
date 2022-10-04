@@ -39,3 +39,7 @@ input.padded {
     border: 1px solid;
     border-radius: 5px;
 }
+
+.pt-20 {
+    padding-top: 20px;
+}

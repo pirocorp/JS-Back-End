@@ -8,6 +8,7 @@ export interface IRoom {
     beds: number;
     price: number;
     imageUrl: string;
+    facilities: Types.ObjectId[];
 };
 
 export interface ICreateRoomDTO {

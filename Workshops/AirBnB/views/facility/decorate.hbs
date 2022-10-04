@@ -1,0 +1,28 @@
+<section>
+    {{> roomDetails}}
+
+    <div class="content pad-med edit-facilities">
+        <form action="/facility/{{room._id}}/decorateRoom" method="post">
+            <ul>
+                {{#each facilities}}
+                <li>
+                    <label class="container" for="{{_id}}">                        
+                        <input type="checkbox" name="{{_id}}" id="{{_id}}" 
+                        {{#if isAvailable}}
+                        checked="true"
+                        {{/if}}
+                         />
+                        <img class="image-box" src="{{iconUrl}}" alt="{{label}}">
+                        <span class="checkmark"></span>
+                        <span class="label">{{label}}</span>
+                    </label>
+                </li>
+                {{/each}}
+            </ul>
+
+            <div class="align-center">
+                <button class="action btn-big">Save</button>
+            </div>
+        </form>
+    </div>
+</section>

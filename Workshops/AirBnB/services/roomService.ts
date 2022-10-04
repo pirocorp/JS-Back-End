@@ -1,5 +1,4 @@
 import Room from '../models/Room';
-
 import { IRoom } from '../interfaces/IRoom';
 
 import { ICreateRoomDTO } from '../interfaces/IRoom';
@@ -16,7 +15,7 @@ export async function getAll(input?: IAccomodationSearchDTO): Promise<IRoom[]> {
 
         const searchRegex = new RegExp(searchTerm, 'i');
         const cityRegex = new RegExp(city, 'i');
-
+        
         // query = query
         //     .regex('name', searchRegex)
         //     .regex('city', cityRegex)
@@ -29,12 +28,11 @@ export async function getAll(input?: IAccomodationSearchDTO): Promise<IRoom[]> {
         });
     }
 
-    const result = await query.lean();
-    return result as IRoom[];
+    return query.lean();
 };
 
 export async function getById(id: string): Promise<IRoom | null>{
-    return (await Room.findById(id).lean()) as IRoom | null;
+    return Room.findById(id).lean().populate('facilities');
 };
 
 export async function create(roomData: ICreateRoomDTO): Promise<IRoom> {
@@ -57,6 +55,6 @@ export async function create(roomData: ICreateRoomDTO): Promise<IRoom> {
         throw new Error(errorMessage);        
     }
 
-    const result = (await Room.create(room)) as IRoom;    
+    const result = Room.create(room);    
     return result;
 };

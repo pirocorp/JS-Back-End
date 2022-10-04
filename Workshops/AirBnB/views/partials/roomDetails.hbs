@@ -1,0 +1,25 @@
+<h1>{{room.name}} - {{subtitle}}</h1>
+
+{{#with room}}
+
+<div>
+    <img src="{{imageUrl}}" alt="{{name}}">
+    <div class="content pad-med facilities-details">
+        <p>Facilities: </p>
+
+        <ul>
+            {{#each facilities}}
+                <li>
+                    <img class="image-box" src="{{iconUrl}}" alt="{{label}}">
+                    <span class="label">{{label}}</span>
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+</div>
+
+<p>{{description}}</p>
+<p>
+    <strong>Price per night: {{price}}€</strong>
+</p>
+{{/with}}

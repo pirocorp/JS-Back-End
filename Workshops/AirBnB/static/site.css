@@ -40,9 +40,7 @@ html {
     min-height: 100vh;
 }
 
-#page-content>header {
-
-}
+#page-content>header {}
 
 #page-content>main {
     padding-bottom: 48px;
@@ -68,4 +66,117 @@ html {
     margin: 32px;
     background-color: hsl(var(--action-color), var(--action-s), 25%);
     box-shadow: var(--shadow);
+}
+
+.facilities-details {
+    float: right;
+    text-align: center;
+    width: 40%;
+}
+
+.facilities-details ul,
+.edit-facilities ul {
+    list-style-type: none;
+}
+
+.facilities-details::after {
+    clear: both;
+}
+
+.edit-facilities li {
+    display: inline-block;
+    padding: 10px 25px;
+    width: 280px;    
+}
+
+.edit-facilities .label {
+    position: absolute;
+    top: 2px;
+    left: 70px;
+}
+
+/* Customize the label (the container) */
+.edit-facilities .container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.edit-facilities .container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.edit-facilities .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.edit-facilities .container:hover input~.checkmark {
+    background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.edit-facilities .container input:checked~.checkmark {
+    background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.edit-facilities .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.edit-facilities .container input:checked~.checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.edit-facilities .container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.facilities-details ul
+{
+    text-align: left;
+}
+
+.facilities-details li {
+    display: inline-block;
+    padding: 10px 20px;
+}
+
+.image-box {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+
+    vertical-align: bottom;
 }

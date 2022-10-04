@@ -3,7 +3,6 @@ import { Router } from 'express';
 import * as roomService from '../services/roomService';
 
 import { IAccomodationSearchDTO } from '../interfaces/IAccomodationSearchDTO';
-import { IRoom } from '../interfaces/IRoom';
 
 const router = Router();
 

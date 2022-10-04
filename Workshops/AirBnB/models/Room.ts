@@ -1,7 +1,9 @@
-import { IRoom } from "../interfaces/IRoom";
 import mongooseService from "../services/common/mongooseService";
 
+import { IRoom } from "../interfaces/IRoom";
+
 const Schema = mongooseService.instance.Schema;
+const { ObjectId } = mongooseService.instance.Types;
 const model = mongooseService.instance.model;
 
 const roomSchema = new Schema({
@@ -11,6 +13,7 @@ const roomSchema = new Schema({
     beds: { type: Number, required: true, min: 1 },
     price: { type: Number, required: true, min: 0.01 },
     imageUrl: { type: String },
+    facilities: { type: [ObjectId], default: [], ref: 'Facility' },
 });
 
 const Room = model<IRoom>('Room', roomSchema);
