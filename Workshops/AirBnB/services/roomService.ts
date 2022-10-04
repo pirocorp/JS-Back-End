@@ -3,6 +3,7 @@ import { IRoom } from '../interfaces/IRoom';
 
 import { ICreateRoomDTO } from '../interfaces/IRoom';
 import { IAccomodationSearchDTO } from '../interfaces/IAccomodationSearchDTO';
+import { IFacility } from '../interfaces/IFacility';
 
 export async function getAll(input?: IAccomodationSearchDTO): Promise<IRoom[]> {  
     let query = Room.find({});  
@@ -31,8 +32,8 @@ export async function getAll(input?: IAccomodationSearchDTO): Promise<IRoom[]> {
     return query.lean();
 };
 
-export async function getById(id: string): Promise<IRoom | null>{
-    return Room.findById(id).lean().populate('facilities');
+export async function getById(id: string){
+    return Room.findById(id).lean().populate<{facilities: IFacility[]}>('facilities');
 };
 
 export async function create(roomData: ICreateRoomDTO): Promise<IRoom> {

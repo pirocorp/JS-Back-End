@@ -35,8 +35,7 @@ router.get('/:roomId/decorateRoom', async (req, res) => {
     const roomId = req.params.roomId;
 
     const room = await roomService.getById(roomId);
-    const available = room?.facilities.map(f => f._id.toString()) ?? [];
-    const facilities = await facilityService.getAllAvailable(available);
+    const facilities = await facilityService.getAllAvailable(room?.facilities);    
 
     res.render('./facility/decorate', {
         title: 'Add Facility',
