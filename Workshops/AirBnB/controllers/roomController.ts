@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { ICreateRoomDTO } from '../interfaces/IRoom';
 
-import * as accommodationService from '../services/accommodationService';
+import * as roomService from '../services/roomService';
 
 const router = Router();
 
@@ -18,8 +18,8 @@ router.post('/create', async (req, res) => {
     const roomData = req.body as ICreateRoomDTO;
 
     try {
-        const result = await accommodationService.create(roomData);
-        res.redirect(`/accommodation/${result.id}`);
+        const result = await roomService.create(roomData);
+        res.redirect(`/accommodation/${result._id}`);
     } catch (err: any) {
         res.render('./accommodation/create', {
             title: 'Request Error',
@@ -28,9 +28,9 @@ router.post('/create', async (req, res) => {
     }   
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
     const roomId = req.params.id;
-    const room = accommodationService.getById(roomId);
+    const room = await roomService.getById(roomId);
 
     const payload = {
         title: 'Accomodation Details',

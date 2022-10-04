@@ -1,45 +1,21 @@
 import express from 'express';
-import { create } from 'express-handlebars';
+import databaseConfig from './config/databaseConfig';
 
-import homeController from './controllers/homeController';
-import catalogController from './controllers/catalogController';
-import accommodationController from './controllers/accommodationController';
-import { notFound } from './controllers/defaultController';
-import { defaultTitle } from './middlewares/defaultTitle';
+import expressConfig from './config/expressConfig'
+import routesConfig from './config/routesConfig';
 
 const port = 3000;
 const host = "pirocorp.com";
-const appTitle = "SoftUni Accomodation";
 
-const handlebars = create({
-    extname: '.hbs'
-});
+async function start() {
+    const app = express();
 
-const app = express();
+    databaseConfig(app);
+    expressConfig(app);
+    routesConfig(app);
 
-// handlebars configuration
-app.engine('.hbs', handlebars.engine);
-app.set('view engine', '.hbs');
-app.set('views', './views');
+    // start the app
+    app.listen(port, host, () => console.log(`Server listening on port ${host}:${port}`));
+};
 
-// static files middleware (urlPath, rootFolder);
-app.use('/static', express.static('./static'));
-
-// middleware for parsing form data adds body in the req.body object
-app.use(express.urlencoded({
-    extended: true
-}));
-
-// Register user defined middleware for default title
-app.use(defaultTitle(appTitle));
-
-// Register controllers
-app.use(homeController);
-app.use('/catalog', catalogController);
-app.use('/accommodation', accommodationController);
-
-// Not found page
-app.all('*', notFound);
-
-// start the app
-app.listen(port, host, () => console.log(`Server listening on port ${host}:${port}`));
+start();

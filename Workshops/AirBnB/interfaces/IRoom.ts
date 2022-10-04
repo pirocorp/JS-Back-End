@@ -1,5 +1,7 @@
+import { Types } from "mongoose";
+
 export interface IRoom {
-    id: string;
+    _id: Types.ObjectId;
     name: string;
     description: string;
     city: string;

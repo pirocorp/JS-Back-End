@@ -1,14 +1,15 @@
 import { Router } from 'express';
 
-import * as accomodationService from '../services/accommodationService';
+import * as roomService from '../services/roomService';
 
 import { IAccomodationSearchDTO } from '../interfaces/IAccomodationSearchDTO';
+import { IRoom } from '../interfaces/IRoom';
 
 const router = Router();
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     const search = req.query as any as IAccomodationSearchDTO;  
-    const rooms = accomodationService.getAll(search);
+    const rooms = await roomService.getAll(search);
 
     const payload = {
         title: 'All accomodations',
