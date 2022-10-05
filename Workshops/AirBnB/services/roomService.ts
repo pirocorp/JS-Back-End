@@ -1,9 +1,11 @@
 import Room from '../models/Room';
+
 import { IRoom } from '../interfaces/IRoom';
+import { IFacility } from '../interfaces/IFacility';
 
 import { ICreateRoomDTO } from '../interfaces/IRoom';
 import { IAccomodationSearchDTO } from '../interfaces/IAccomodationSearchDTO';
-import { IFacility } from '../interfaces/IFacility';
+
 
 export async function getAll(input?: IAccomodationSearchDTO): Promise<IRoom[]> {  
     let query = Room.find({});  
