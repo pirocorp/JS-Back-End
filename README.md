@@ -5,6 +5,7 @@
 - [NodeJS Architecture Series Part 1](https://www.toptal.com/express-js/nodejs-typescript-rest-api-pt-1)
 - [NodeJS Architecture Series Part 2](https://www.toptal.com/express-js/nodejs-typescript-rest-api-pt-2)
 - [NodeJS Architecture Series Part 3](https://www.toptal.com/express-js/nodejs-typescript-rest-api-pt-3)
+- [Series Repo](https://github.com/makinhs/toptal-rest-series)
 
 
 ## Resources
