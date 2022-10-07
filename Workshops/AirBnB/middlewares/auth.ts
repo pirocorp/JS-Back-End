@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { IJwtUser } from '../interfaces/IJwtUser';
+import { IJwtUser } from '../interfaces/IUser';
 
 export const authentication = (jwtSecret: string) => (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies.jwt;
@@ -17,7 +17,7 @@ export const authentication = (jwtSecret: string) => (req: Request, res: Respons
     }
 
     req.signJwt = (data: IJwtUser) => jwt.sign(data, jwtSecret, {
-        expiresIn: '1h'
+        expiresIn: '4h'
     });
     
     next();

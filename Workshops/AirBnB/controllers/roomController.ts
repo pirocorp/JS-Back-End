@@ -23,7 +23,7 @@ router.post('/create', async (req, res) => {
     } catch (err: any) {
         res.render('./room/create', {
             title: 'Request Error',
-            error: err.message.split('\n')
+            errors: err.message.split('\n')
         });
     }   
 });

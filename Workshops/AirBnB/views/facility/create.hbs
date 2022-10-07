@@ -1,9 +1,9 @@
 <section>
     <h1>{{title}}</h1>
 
-    {{#if error}}
+    {{#if errors}}
     <div class="error-box align-center">
-        {{#each error}}
+        {{#each errors}}
         <p>{{this}}</p>
         {{/each }}
     </div>

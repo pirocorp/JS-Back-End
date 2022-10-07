@@ -10,7 +10,7 @@
     {{/if}}
 
     <div class="item padded align-center">
-        <form class="layout left large" action="/auth/login" method="post">
+        <form class="layout left large" action="/auth/register" method="post">
 
             <div class="col aligned">
                 <label for="username">
@@ -21,16 +21,20 @@
                     <span>Password</span>
                     <input class="padded" type="password" name="password" id="password" />
                 </label>
+                <label for="repass">
+                    <span>Confirm Password</span>
+                    <input class="padded" type="password" name="repass" id="repass" />
+                </label>
             </div>
 
             <div class="content pad-med align-center vertical pt-20 ">
-                <div class="align-center">
-                    <input class="action btn-big" type="submit" value="Login" />
+                <div class="align-center pt-20">
+                    <input class="action btn-big" type="submit" value="Register"/>
                 </div>
             </div>
         </form>
         <footer>
-            Dont have an account? <a href="/auth/register">Sign up here</a>
+            Already have an account? <a href="/auth/login">Login here</a>
         </footer>
     </div>
 </section>

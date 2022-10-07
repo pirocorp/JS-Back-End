@@ -19,10 +19,10 @@ router.post('/create', async (req, res) => {
     try {
         facilityService.createFacility(label, iconUrl);
         res.redirect('/catalog');
-    } catch (error) {
+    } catch (error: any) {
         res.render('./facility/create', {
             title: 'Create New Facility',
-            error: [error]
+            errors: error.message.split('\n')
         });
     }
     
