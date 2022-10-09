@@ -1,12 +1,10 @@
 import bcrypt from 'bcrypt';
-import { Types } from 'mongoose';
 
-import User from '../models/User';
-import { IJwtUser } from '../interfaces/IUser';
+import User, { collation as userCollation } from '../models/User';
+import { IJwtUser, IUser } from '../interfaces/IUser';
 
 export async function login(username: string, password: string): Promise<IJwtUser> {
-    const regexExp = new RegExp(username);
-    const user = await User.findOne({ username: { $regex: regexExp, $options: 'i' }});
+    const user = await getUser(username);
 
     if(!user){
         throw new Error("Invalid username or password"); 
@@ -28,9 +26,7 @@ export async function login(username: string, password: string): Promise<IJwtUse
 };
 
 export async function register(username: string, password: string): Promise<IJwtUser> {
-    const regexExp = new RegExp(username);
-    const exists = await User
-        .findOne({ username: { $regex: regexExp, $options: 'i' }});
+    const exists = await getUser(username);
 
     if(exists) {
         throw new Error("Username is taken");        
@@ -49,4 +45,8 @@ export async function register(username: string, password: string): Promise<IJwt
     };
 
     return userDto;
-}
+};
+
+const getUser = async (username: string) : Promise<IUser | null> => {
+    return await User.findOne({ username }).collation(userCollation);
+};

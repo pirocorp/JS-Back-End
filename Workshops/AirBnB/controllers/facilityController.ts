@@ -31,27 +31,31 @@ router.post('/create', async (req, res) => {
     // profit
 });
 
-router.get('/:roomId/decorateRoom', async (req, res) => {
-    const roomId = req.params.roomId;
+router.get(
+    '/:roomId/decorateRoom', 
+    async (req, res) => {
+        const roomId = req.params.roomId;
 
-    const room = await roomService.getById(roomId);
-    const facilities = await facilityService.getAllAvailable(room?.facilities);    
+        const room = await roomService.getById(roomId);
+        const facilities = await facilityService.getAllAvailable(room?.facilities);    
 
-    res.render('./facility/decorate', {
-        title: 'Add Facility',
-        subtitle: 'Edit',
-        room,
-        facilities
-    });
+        res.render('./facility/decorate', {
+            title: 'Add Facility',
+            subtitle: 'Edit',
+            room,
+            facilities
+        });
 });
 
-router.post('/:roomId/decorateRoom', async (req, res) => {
-    const roomId = req.params.roomId;
-    const facilities = Object.keys(req.body);
+router.post(
+    '/:roomId/decorateRoom', 
+    async (req, res) => {
+        const roomId = req.params.roomId;
+        const facilities = Object.keys(req.body);
 
-    await facilityService.addFacilitiesToRoom(roomId, facilities); 
+        await facilityService.addFacilitiesToRoom(roomId, facilities); 
 
-    res.redirect(`/accommodation/${roomId}`);
+        res.redirect(`/accommodation/${roomId}`);
 });
 
 export default router;

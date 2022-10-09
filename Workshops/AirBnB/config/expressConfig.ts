@@ -2,8 +2,9 @@ import express, { Express } from 'express';
 import cookieParser from 'cookie-parser';
 
 import { create } from 'express-handlebars';
-import { defaultTitle } from '../middlewares/defaultTitle';
-import { authentication } from '../middlewares/auth';
+import { defaultTitle } from '../middlewares/defaultTitleMiddleware';
+import { authentication } from '../middlewares/authMiddleware';
+import { userNav } from '../middlewares/userNavMiddleware';
 
 const appTitle = "SoftUni Accomodation";
 
@@ -30,6 +31,9 @@ export default function expressConfig(app: Express) {
 
     // authentication middleware
     app.use(authentication(jwtSecret));
+
+    // user navigation middleware
+    app.use(userNav());
 
     // Register user defined middleware for default title
     app.use(defaultTitle(appTitle));
