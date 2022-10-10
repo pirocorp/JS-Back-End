@@ -1,7 +1,11 @@
 <section>
     {{> roomDetails}}
 
-    <div>
-        <a class="cta action align-center" href="/facility/{{room._id}}/decorateRoom">Edit Facilities</a>
-    </div>
+    {{#if isOwner}}
+        <div class="btn-box">
+            <a class="cta action align-center" href="/facility/{{room._id}}/decorateRoom">Facilities</a>
+            <a class="cta action align-center" href="/accommodation/{{room._id}}/edit">Edit</a>
+            <a class="cta action align-center" href="/accommodation/{{room._id}}/delete">Delete</a>
+        </div>
+    {{/if}}
 </section>

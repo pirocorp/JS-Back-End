@@ -180,3 +180,36 @@ html {
 
     vertical-align: bottom;
 }
+
+.room-img-box {
+    width: 500px;
+    height: 350px;
+    object-fit: cover;
+
+    vertical-align: bottom;
+}
+
+.header {
+    display: flex;
+    align-content: center;
+    color: white;
+}
+
+.header .flex-item
+{
+    align-self: center;
+    text-align: center;
+    padding-left: 50px;
+}
+
+.item-description {    
+    text-align: center;
+    margin: 50px;
+}
+
+.btn-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 70px;
+    padding: 0px 100px;
+}

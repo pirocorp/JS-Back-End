@@ -32,6 +32,7 @@ textarea {
     display: block;
     width: 100%;
     resize: vertical;
+    padding: 10px 20px;
 }
 
 input.padded {
@@ -42,4 +43,9 @@ input.padded {
 
 .pt-20 {
     padding-top: 20px;
+}
+
+.not-found-element {
+    padding: 50px 30px;
+    text-align: center;
 }

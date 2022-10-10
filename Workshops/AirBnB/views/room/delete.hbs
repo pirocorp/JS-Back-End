@@ -10,42 +10,42 @@
     {{/if}}
 
     <div class="item padded align-center">
-        <form class="layout left large" action="/accommodation/create" method="post">
+        <form class="layout left large" action="/accommodation/{{roomId}}/delete" method="post">
             {{#with room}}
             <div class="col aligned">
                 <label for="name">
                     <span>Name</span>
-                    <input class="padded" type="text" name="name" id="name" value="{{name}}" />
+                    <input class="padded" type="text" name="name" id="name" value="{{name}}" disabled="true" />
                 </label>
                 <label for="city">
                     <span>City</span>
-                    <input class="padded" type="text" name="city" id="city" value="{{city}}" />
+                    <input class="padded" type="text" name="city" id="city" value="{{city}}" disabled="true" />
                 </label>
                 <label for="imageUrl">
                     <span>Image Url</span>
-                    <input class="padded" type="text" name="imageUrl" id="imageUrl" value="{{imageUrl}}" />
+                    <input class="padded" type="text" name="imageUrl" id="imageUrl" value="{{imageUrl}}" disabled="true" />
                 </label>
                 <label for="beds">
                     <span>Beds</span>
-                    <input class="padded" type="number" name="beds" id="beds" value="{{beds}}" />
+                    <input class="padded" type="number" name="beds" id="beds" value="{{beds}}" disabled="true" />
                 </label>
                 <label for="price">
                     <span>Price per Night</span>
-                    <input class="padded" type="text" name="price" id="price" value="{{price}}" />
+                    <input class="padded" type="text" name="price" id="price" value="{{price}}" disabled="true" />
                 </label>
             </div>
 
             <div class="content pad-med align-center vertical">
                 <label for="description">
                     <span>Description</span>
-                    <textarea name="description" id="description" rows="5">{{description}}</textarea>
+                    <textarea name="description" id="description" rows="5" disabled="true">{{description}}</textarea>
                 </label>
                 
                 <div class="align-center">
-                    <input class="action" type="submit" value="Create Accomodation"/>
+                    <input class="action" type="submit" value="Confirm Delete"/>
                 </div>
             </div>
-            {{/with}}
         </form>
     </div>
+    {{/with}}
 </section>

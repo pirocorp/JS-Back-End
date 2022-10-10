@@ -1,6 +1,6 @@
 import express from 'express';
-import databaseConfig from './config/databaseConfig';
 
+import databaseConfig from './config/databaseConfig';
 import expressConfig from './config/expressConfig'
 import routesConfig from './config/routesConfig';
 
@@ -11,7 +11,7 @@ async function start() {
     const app = express();
 
     databaseConfig(app);
-    expressConfig(app);
+    expressConfig(app);    
     routesConfig(app);
 
     // start the app

@@ -9,11 +9,14 @@
 </head>
 <body>
     <div id="page-content">
-        <header>
+        <header class="header">
             <a href="/" class="title-logo">
                 <img src="/static/assets/logo.png">
                 <span>Sleepover</span>
             </a>
+            {{#if hasUser}}
+            <span class="flex-item">Welcome, {{username}}</span>
+            {{/if}}
             <nav class="main-nav nav-mid">
                 <ul>
                     <li><a href="/catalog">Catalog</a></li>

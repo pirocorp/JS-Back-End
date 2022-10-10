@@ -25,37 +25,43 @@ router.post('/create', async (req, res) => {
             errors: error.message.split('\n')
         });
     }
-    
+
     // take data from body
     // create model instance
     // profit
 });
 
-router.get(
-    '/:roomId/decorateRoom', 
-    async (req, res) => {
-        const roomId = req.params.roomId;
+router.get('/:roomId/decorateRoom', async (req, res) => {
+    const roomId = req.params.roomId;
+    const room = await roomService.getRoomDetailsById(roomId);
 
-        const room = await roomService.getById(roomId);
-        const facilities = await facilityService.getAllAvailable(room?.facilities);    
+    if (!req.user || room?.owner._id != req.user._id) {
+        return res.redirect('/auth/login');
+    }
 
-        res.render('./facility/decorate', {
-            title: 'Add Facility',
-            subtitle: 'Edit',
-            room,
-            facilities
-        });
+    const facilities = await facilityService.getAllAvailable(room?.facilities);
+
+    res.render('./facility/decorate', {
+        title: 'Add Facility',
+        subtitle: 'Edit',
+        room,
+        facilities
+    });
 });
 
-router.post(
-    '/:roomId/decorateRoom', 
-    async (req, res) => {
-        const roomId = req.params.roomId;
-        const facilities = Object.keys(req.body);
+router.post('/:roomId/decorateRoom', async (req, res) => {
+    const roomId = req.params.roomId;
+    const room = await roomService.getRoomDetailsById(roomId);
 
-        await facilityService.addFacilitiesToRoom(roomId, facilities); 
+    if (!req.user || room?.owner._id != req.user._id) {
+        return res.redirect('/auth/login');
+    }
+    
+    const facilities = Object.keys(req.body);
 
-        res.redirect(`/accommodation/${roomId}`);
+    await facilityService.addFacilitiesToRoom(roomId, facilities);
+
+    res.redirect(`/accommodation/${roomId}`);
 });
 
 export default router;

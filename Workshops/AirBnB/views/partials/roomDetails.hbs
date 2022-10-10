@@ -3,23 +3,28 @@
 {{#with room}}
 
 <div>
-    <img src="{{imageUrl}}" alt="{{name}}">
+    <img class="room-img-box" src="{{imageUrl}}" alt="{{name}}">
     <div class="content pad-med facilities-details">
         <p>Facilities: </p>
 
         <ul>
             {{#each facilities}}
-                <li>
-                    <img class="image-box" src="{{iconUrl}}" alt="{{label}}">
-                    <span class="label">{{label}}</span>
-                </li>
+            <li>
+                <img class="image-box" src="{{iconUrl}}" alt="{{label}}">
+                <span class="label">{{label}}</span>
+            </li>
             {{/each}}
         </ul>
     </div>
 </div>
+    <div class="padded">
+        <footer>
+            Listed by {{owner.username}}
+        </footer>
+    </div>
 
-<p>{{description}}</p>
+<p class="item-description">{{description}}</p>
 <p>
-    <strong>Price per night: {{price}}€</strong>
+    <strong>Price per night: {{price}} €</strong>
 </p>
 {{/with}}

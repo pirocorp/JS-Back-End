@@ -10,7 +10,7 @@
     {{/if}}
 
     <div class="item padded align-center">
-        <form class="layout left large" action="/accommodation/create" method="post">
+        <form class="layout left large" action="/accommodation/{{roomId}}/edit" method="post">
             {{#with room}}
             <div class="col aligned">
                 <label for="name">
@@ -42,10 +42,10 @@
                 </label>
                 
                 <div class="align-center">
-                    <input class="action" type="submit" value="Create Accomodation"/>
+                    <input class="action" type="submit" value="Update Accomodation"/>
                 </div>
             </div>
-            {{/with}}
         </form>
     </div>
+    {{/with}}
 </section>
