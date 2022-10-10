@@ -1,18 +1,20 @@
 import { Router } from 'express';
 
+import { hasRole } from '../middlewares/guards';
+
 import * as roomService from '../services/roomService';
 import * as facilityService from '../services/facilityService';
 
 const router = Router();
 
-router.get('/create', (req, res) => {
+router.get('/create', hasRole('admin'), (req, res) => {
     // show creation form
     res.render('./facility/create', {
         title: 'Create New Facility'
     });
 });
 
-router.post('/create', async (req, res) => {
+router.post('/create', hasRole('admin'), async (req, res) => {
     const label = req.body.label;
     const iconUrl = req.body.iconUrl;
 
