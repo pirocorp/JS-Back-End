@@ -20,7 +20,7 @@ router.get('/create', hasUser(), (req, res) => {
 router.post('/create', hasUser(), async (req, res) => {
     const roomData = req.body as IRoomDTO;
     const ownerId = (req.user as IJwtUser)._id;
-
+    
     try {
         const result = await roomService.create(roomData, ownerId.toString());
         res.redirect(`/accommodation/${result._id}`);

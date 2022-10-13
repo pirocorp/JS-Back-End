@@ -14,6 +14,7 @@ export interface IRoom {
     owner: Types.ObjectId;
 };
 
+
 export interface IRoomDTO {
     name: string;
     description: string;

@@ -27,10 +27,6 @@ router.post('/create', hasRole('admin'), async (req, res) => {
             errors: error.message.split('\n')
         });
     }
-
-    // take data from body
-    // create model instance
-    // profit
 });
 
 router.get('/:roomId/decorateRoom', async (req, res) => {
