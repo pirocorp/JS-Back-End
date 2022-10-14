@@ -7,8 +7,8 @@ const paths = {
             home: '/'
         }
     },
-    authController: {
-        path: '/auth',
+    accountsController: {
+        path: '/accounts',
         actions: {
             login: '/login',
             register: '/register',

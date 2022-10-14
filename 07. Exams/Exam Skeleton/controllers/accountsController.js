@@ -1,17 +1,17 @@
-const authController = require('express').Router();
+const accountsController = require('express').Router();
 
 const userService = require('../services/userService');
 const { parseError } = require('../utils/parsers');
 const { sessionCookieName, paths } = require('../globalConstants');
 
 // TODO: Replace login view with the actual view from assignment
-authController.get(paths.authController.actions.login, (req, res) => {
+accountsController.get(paths.accountsController.actions.login, (req, res) => {
     res.render('accounts/login', {
         title: 'Login Page'
     });
 });
 
-authController.post(paths.authController.actions.login, async (req, res) => {
+accountsController.post(paths.accountsController.actions.login, async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
 
@@ -36,13 +36,13 @@ authController.post(paths.authController.actions.login, async (req, res) => {
 });
 
 // TODO: Replace register view with the actual view from assignment
-authController.get(paths.authController.actions.register, (req, res) => {
+accountsController.get(paths.accountsController.actions.register, (req, res) => {
     res.render('accounts/register', {
         title: 'Register Page'
     });
 });
 
-authController.post(paths.authController.actions.register, async (req, res) => {
+accountsController.post(paths.accountsController.actions.register, async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     const repass = req.body.repass;
@@ -76,7 +76,7 @@ authController.post(paths.authController.actions.register, async (req, res) => {
     }
 });
 
-authController.get(paths.authController.actions.logout, (req, res) => {
+accountsController.get(paths.accountsController.actions.logout, (req, res) => {
     res.clearCookie(sessionCookieName);
 
     // TODO: check assignment to where logout redirects
@@ -87,4 +87,4 @@ const attachToken = (res, token) => {
     res.cookie(sessionCookieName, token, { maxAge: 14400000, httpOnly: true });   
 };
 
-module.exports = authController;
+module.exports = accountsController;

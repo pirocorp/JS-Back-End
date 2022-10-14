@@ -3,7 +3,7 @@ const { sessionCookieName, paths } = require('../globalConstants');
 
 module.exports = () => (req, res, next) => {
     const token = req.cookies[sessionCookieName];
-    const userLoginPath = paths.fullPath('authController', 'login');
+    const userLoginPath = paths.fullPath('accountsController', 'login');
 
     if(token) {
         try {
