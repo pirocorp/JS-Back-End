@@ -4,6 +4,7 @@ const userService = require('../services/userService');
 const { parseError } = require('../utils/parsers');
 const { sessionCookieName, paths } = require('../globalConstants');
 
+// TODO: Replace login view with the actual view from assignment
 authController.get(paths.authController.actions.login, (req, res) => {
     res.render('accounts/login', {
         title: 'Login Page'
@@ -78,7 +79,7 @@ authController.post(paths.authController.actions.register, async (req, res) => {
 authController.get(paths.authController.actions.logout, (req, res) => {
     res.clearCookie(sessionCookieName);
 
-    //TODO: check assignment to where logout redirects
+    // TODO: check assignment to where logout redirects
     res.redirect(paths.homeController.path);
 });
 

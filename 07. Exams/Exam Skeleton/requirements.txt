@@ -6,6 +6,7 @@
 [X]   - password hashing
 [X]   - JWT
 [X] Error Handling
+[ ] User Role guards
 Full CRUD (application specific)
   - catalog
   - details
