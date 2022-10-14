@@ -1,8 +1,18 @@
 const { Schema, model } = require('mongoose');
 
-// TODO: Make User Schema according to assignment
 const userSchema = new Schema({
-    username: { type: String, required: true, unique: true, minlength: [3, 'Username must be at least 3 characters long'] },
+    email: { 
+        type: String, 
+        required: true, 
+        unique: true,
+        // match: [/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/, 'Email is not valid.']
+    },
+    username: { 
+        type: String, 
+        required: true, 
+        unique: true, 
+        match: [ /^[a-zA-Z0-9]+$/i, 'Username may contain only english letters and numbers' ]
+    },
     hashedPassword: { type: String, required: true }
 });
 
@@ -11,9 +21,8 @@ const collation = {
     strength: 2
 };
 
-userSchema.index({ username: 1 }, { 
-    collation
- });
+userSchema.index({ username: 1 }, { collation });
+userSchema.index({ email: 1 }, { collation });
 
 const User = model('User', userSchema);
 User.collation = collation;
