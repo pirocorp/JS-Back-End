@@ -11,8 +11,8 @@ authController.get(paths.authController.actions.login, (req, res) => {
 });
 
 authController.post(paths.authController.actions.login, async (req, res) => {
-    const username = req.body.username.trim();
-    const password = req.body.password.trim();
+    const username = req.body.username;
+    const password = req.body.password;
 
     try {
         const token = await userService.login(username, password);
@@ -42,9 +42,9 @@ authController.get(paths.authController.actions.register, (req, res) => {
 });
 
 authController.post(paths.authController.actions.register, async (req, res) => {
-    const username = req.body.username.trim();
-    const password = req.body.password.trim();
-    const repass = req.body.repass.trim();
+    const username = req.body.username;
+    const password = req.body.password;
+    const repass = req.body.repass;
 
     try {
         if (username == '' || password == '') {
