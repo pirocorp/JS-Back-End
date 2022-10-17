@@ -1,9 +1,9 @@
 const { paths } = require('../globalConstants');
 
-const userLoginPath = paths.fullPath('authController', 'login');
+const userLoginPath = paths.fullPath('accountsController', 'login');
 
 function hasUser() {
-    return (req, res, nect) => {
+    return (req, res, next) => {
         if(req.user) {
             next();
         } else {
@@ -14,7 +14,7 @@ function hasUser() {
 };
 
 function isGuest() {
-    return (req, res, nect) => {
+    return (req, res, next) => {
         if(req.user) {
             // TODO: Check assignment for redirect destination
             res.redirect(paths.homeController.actions.home);
