@@ -33,7 +33,7 @@
             <div class="left-container">
                 <ul>
                     <li><a href="/">Home</a></li>
-                    {{#if user}}
+                    {{#if username}}
                     <li><a href="/hotels/create">Add +</a></li>
                     {{else}}
                     <li><a href="/accounts/login">Login</a></li>
@@ -43,8 +43,8 @@
                 </ul>
             </div>
             <div class="right-container">
-                {{#if user}}
-                <a href="/accounts/profile" class="log-out">{{user.username}}</a>
+                {{#if username}}
+                <a href="/accounts/profile" class="log-out">{{username}}</a>
                 <a href="/accounts/logout" class="log-out">Logout</a>
                 {{/if}}                
             </div>

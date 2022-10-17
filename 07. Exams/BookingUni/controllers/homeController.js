@@ -1,12 +1,15 @@
 const homeController = require('express').Router();
 
+const hotelService = require('../services/hotelService');
 const { paths } = require('../globalConstants');
 
-// TODO: Replace with real controller by assignment
-homeController.get(paths.homeController.actions.home, (req, res) => {
+
+homeController.get(paths.homeController.actions.home, async (req, res) => {
+    const hotels = await hotelService.getAll();
+
     res.render('home', {
         title: 'Home Page',
-        user: req.user
+        hotels
     });
 });
 

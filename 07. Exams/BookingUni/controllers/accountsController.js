@@ -2,8 +2,10 @@ const accountsController = require('express').Router();
 const validator = require('validator');
 
 const userService = require('../services/userService');
+const hotelService = require('../services/hotelService');
 const { parseError } = require('../utils/parsers');
 const { sessionCookieName, paths } = require('../globalConstants');
+const { hasUser } = require('../middlewares/guards');
 
 accountsController.get(paths.accountsController.actions.login, (req, res) => {
     res.render('accounts/login', {
@@ -14,8 +16,6 @@ accountsController.get(paths.accountsController.actions.login, (req, res) => {
 accountsController.post(paths.accountsController.actions.login, async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
-
-    console.log(email, password);
 
     try {
         const token = await userService.login(email, password);
@@ -91,9 +91,16 @@ accountsController.get(paths.accountsController.actions.logout, (req, res) => {
     res.redirect(paths.homeController.path);
 });
 
-accountsController.get(paths.accountsController.actions.profile, (req, res) => {
+accountsController.get(paths.accountsController.actions.profile, hasUser(), async (req, res) => {
+    const userId = req.user._id;
+    const bookings = await hotelService.getBookingByUserId(userId);
+
+    console.log(bookings);
+
     res.render('accounts/profile', {
-        title: 'Profile Page'
+        title: 'Profile Page',
+        user: Object.assign({ bookings }, req.user),
+        bookings
     });
 });
 

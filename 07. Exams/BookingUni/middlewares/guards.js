@@ -1,9 +1,9 @@
 const { paths } = require('../globalConstants');
 
-const userLoginPath = paths.fullPath('authController', 'login');
+const userLoginPath = paths.fullPath('accountsController', 'login');
 
 function hasUser() {
-    return (req, res, nect) => {
+    return (req, res, next) => {
         if(req.user) {
             next();
         } else {
