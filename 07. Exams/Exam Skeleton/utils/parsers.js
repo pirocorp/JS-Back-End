@@ -5,9 +5,7 @@ const validationErrorParser = (error) => Object.values(error.errors).map(v => v.
 function parseError (error) {
     if(error.name == 'ValidationError') {
         return validationErrorParser(error);
-    }
-
-    if(error.name == 'Error') {
+    } else {
         return errorParser(error);
     }
 }
