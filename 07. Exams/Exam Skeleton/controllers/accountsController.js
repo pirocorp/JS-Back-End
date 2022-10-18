@@ -2,7 +2,7 @@ const accountsController = require('express').Router();
 
 const userService = require('../services/userService');
 const { parseError } = require('../utils/parsers');
-const { sessionCookieName, paths } = require('../globalConstants');
+const { sessionCookieName, paths, homePath } = require('../globalConstants');
 
 // TODO: Replace login view with the actual view from assignment
 accountsController.get(paths.accountsController.actions.login, (req, res) => {
@@ -20,7 +20,7 @@ accountsController.post(paths.accountsController.actions.login, async (req, res)
 
         attachToken(res, token);
         // TODO: check assigment for to where login redirects
-        res.redirect(paths.homeController.actions.home);
+        res.redirect(homePath);
     } catch (error) {
         const errors = parseError(error);
 
@@ -61,7 +61,7 @@ accountsController.post(paths.accountsController.actions.register, async (req, r
         // TODO: check assigment to see if register creates session
         attachToken(res, token);
         // TODO: check assigment to where register redirects
-        res.redirect(paths.homeController.actions.home);
+        res.redirect(homePath);
     } catch (error) {
         const errors = parseError(error);
 
@@ -80,7 +80,7 @@ accountsController.get(paths.accountsController.actions.logout, (req, res) => {
     res.clearCookie(sessionCookieName);
 
     // TODO: check assignment to where logout redirects
-    res.redirect(paths.homeController.path);
+    res.redirect(homePath);
 });
 
 const attachToken = (res, token) => {

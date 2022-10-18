@@ -1,9 +1,8 @@
 const userService = require('../services/userService');
-const { sessionCookieName, paths } = require('../globalConstants');
+const { sessionCookieName, userLoginPath } = require('../globalConstants');
 
 module.exports = () => (req, res, next) => {
     const token = req.cookies[sessionCookieName];
-    const userLoginPath = paths.fullPath('accountsController', 'login');
 
     if(token) {
         try {

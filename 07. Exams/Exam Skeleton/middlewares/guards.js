@@ -1,6 +1,5 @@
 const { paths } = require('../globalConstants');
-
-const userLoginPath = paths.fullPath('accountsController', 'login');
+const { userLoginPath } = require('../globalConstants');
 
 function hasUser() {
     return (req, res, next) => {

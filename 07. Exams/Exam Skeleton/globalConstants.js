@@ -18,9 +18,15 @@ const paths = {
 };
 
 paths.fullPath = (controller, action) => (paths[controller].path + paths[controller].actions[action]);
+paths.fullPathWithId = (controller, action, id) => paths.fullPath(controller, action).replace(':id', id);
+
+const userLoginPath = paths.fullPath('accountsController', 'login');
+const homePath = '/';
 
 module.exports = {
     sessionCookieName,
-    paths
+    paths,
+	userLoginPath,
+	homePath
 }
 
