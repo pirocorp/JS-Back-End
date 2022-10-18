@@ -15,8 +15,8 @@
 Request context example
 
 ```js
-asyncHooks.createHook({ init, destroy }).enable()
-const reqContextMap = new Map()
+asyncHooks.createHook({ init, destroy }).enable();
+const reqContextMap = new Map();
 
 function createRequestContext (data) {
     reqContextMap.set(asyncHooks.executionAsyncId(), data)
