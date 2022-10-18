@@ -13,6 +13,38 @@
 [The power of Async Hooks in Node.js](https://medium.com/nmc-techblog/the-power-of-async-hooks-in-node-js-8a2a84238acb)
 
 Example usage of Execution Context
+
+```js
+asyncHooks.createHook({ init, destroy }).enable()
+const reqContextMap = new Map()
+
+function createRequestContext (data) {
+    reqContextMap.set(asyncHooks.executionAsyncId(), data)
+}
+
+function getRequestContext () {
+    return reqContextMap.get(asyncHooks.executionAsyncId())
+}
+
+function init (asyncId, type, triggerAsyncId, resource) {
+    // Store same context data for child async resources
+    if (reqContextMap.has(triggerAsyncId)) {
+        reqContextMap.set(asyncId, reqContextMap.get(triggerAsyncId))
+    }
+}
+
+function destroy (asyncId) {
+    if (reqContextMap.has(asyncId)) {
+        reqContextMap.delete(asyncId)
+    }
+}
+
+module.exports = { 
+    createRequestContext, 
+    getRequestContext 
+};
+```
+
 ```js
 const express = require('express');
 const ah = require('./hooks');
