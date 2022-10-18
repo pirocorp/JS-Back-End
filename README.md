@@ -10,6 +10,37 @@
 
 ## Resources
 
+[The power of Async Hooks in Node.js](https://medium.com/nmc-techblog/the-power-of-async-hooks-in-node-js-8a2a84238acb)
+
+Example usage
+```js
+const express = require('express');
+const ah = require('./hooks');
+const app = express();
+const port = 3000;
+
+app.use((request, response, next) => {
+    const data = { headers: request.headers };
+    ah.createRequestContext(data);
+    next();
+});
+
+const requestHandler = (request, response, next) => {
+    const reqContext = ah.getRequestContext();
+    response.json(reqContext);
+    next()
+};
+
+app.get('/', requestHandler)
+
+app.listen(port, (err) => {
+    if (err) {
+        return console.error(err);
+    }
+    console.log(`server is listening on ${port}`);
+});
+```
+
 [PubSub and dependency injection on NodeJS app](https://softwareontheroad.com/ideal-nodejs-project-structure/)
 
 [NodeJS and TypeScript](https://wanago.io/2019/02/11/node-js-typescript-modules-file-system/)
