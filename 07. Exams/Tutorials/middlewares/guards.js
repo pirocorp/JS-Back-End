@@ -1,13 +1,10 @@
-const { paths } = require('../globalConstants');
-
-const userLoginPath = paths.fullPath('accountsController', 'login');
+const { userLoginPath, homePath } = require('../globalConstants');
 
 function hasUser() {
     return (req, res, next) => {
         if(req.user) {
             next();
         } else {
-            // TODO: Check assignment for redirect destination
             res.redirect(userLoginPath);
         }
     };
@@ -16,10 +13,8 @@ function hasUser() {
 function isGuest() {
     return (req, res, next) => {
         if(req.user) {
-            // TODO: Check assignment for redirect destination
-            res.redirect(paths.homeController.actions.home);
-        } else {
-            
+            res.redirect(homePath);
+        } else {            
             next();
         }
     };

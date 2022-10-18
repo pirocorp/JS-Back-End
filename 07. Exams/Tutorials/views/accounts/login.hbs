@@ -1,16 +1,13 @@
-<h1>Login Page</h1>
+<form class="text-center border border-light p-5" method="post">
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" placeholder="Username" name="username" value="{{body.username}}">
+    </div>
 
-<form method="post">
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" placeholder="Password" name="password" />
+    </div>
 
-    <label>
-        Username:
-        <input type="text" name="username" value="{{body.username}}" />
-    </label>
-
-    <label>
-        Password:
-        <input type="password" name="password" />
-    </label>
-
-    <button type="submit">Login</button>
+    <button type="submit" class="btn btn-primary">Login</button>
 </form>

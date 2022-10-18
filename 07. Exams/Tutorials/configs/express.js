@@ -15,7 +15,6 @@ module.exports = (app) => {
 
     app.use('/static', express.static('static'));
     app.use(express.urlencoded({ extended: true }));
-    // TODO: Verify that assignment expect trim
     app.use(trimBody('username', 'password'));
     app.use(cookieParser());
     app.use(session());
