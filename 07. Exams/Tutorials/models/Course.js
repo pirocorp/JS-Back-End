@@ -48,7 +48,7 @@ const collation = {
     strength: 2
 };
 
-courseSchema.index({ title: 1}, collation);
+courseSchema.index({ title: 1 }, collation);
 courseSchema.pre('save', preSave);
 
 const Course = model('Course', courseSchema);

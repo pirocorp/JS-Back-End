@@ -8,9 +8,15 @@ async function getTop() {
         .lean();
 }
 
-async function getAll() {
+async function getAll(search) {
+    const query = {};
+
+    if(search){
+        query.title = new RegExp(search, 'i');
+    }
+
     return Course
-        .find({})
+        .find(query)
         .sort({ createdAt: 1 })        
         .lean();
 };
