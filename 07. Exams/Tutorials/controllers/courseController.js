@@ -46,7 +46,7 @@ courseController.post(paths.courseController.actions.create, async (req, res) =>
     }
 });
 
-courseController.get(paths.courseController.actions.edit, preloader(), isOwner(), async (req, res) => {
+courseController.get(paths.courseController.actions.edit, preloader(true), isOwner(), async (req, res) => {
     res.render('courses/edit', {
         title: 'Edit Course',
         course: res.locals.course
@@ -55,9 +55,10 @@ courseController.get(paths.courseController.actions.edit, preloader(), isOwner()
 
 courseController.post(paths.courseController.actions.edit, preloader(), isOwner(), async (req, res) => {
     const courseId = req.params.id;
+    const course = res.locals.course;
 
     try {        
-        await courseService.updateById(courseId, req.body);
+        await courseService.update(course, req.body);
         res.redirect(courseDetailsPath(courseId));
     } catch (error) {
         res.render('courses/edit', {
@@ -83,7 +84,7 @@ courseController.get(paths.courseController.actions.enroll, preloader(), async (
     if(course.owner.toString() != userId
         && !course.users.map(x => x.toString()).includes(userId)){
 
-        await courseService.enrollUser(courseId, userId);
+        await courseService.enrollUser(course, userId);
     }    
 
     return res.redirect(courseDetailsPath(courseId));

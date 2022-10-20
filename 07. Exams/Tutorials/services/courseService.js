@@ -33,9 +33,7 @@ async function create(course) {
     return Course.create(course);
 };
 
-async function updateById(id, data) {
-    const current = await Course.findById(id);
-
+async function update(current, data) {
     current.title = data.title;
     current.description = data.description;
     current.imageUrl = data.imageUrl;
@@ -48,8 +46,7 @@ async function deleteById(id) {
     return await Course.findByIdAndDelete(id);
 };
 
-async function enrollUser(courseId, userId) {
-    const course = await Course.findById(courseId);
+async function enrollUser(course, userId) {
     course.users.push(userId);
 
     return course.save();
@@ -62,6 +59,6 @@ module.exports = {
     getById,
     getByIdRaw,
     deleteById,
-    updateById,
+    update,
     enrollUser
 }
