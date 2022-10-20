@@ -6,7 +6,7 @@ async function getTop() {
         .sort({ usersCount: -1 })  
         .limit(3)      
         .lean();
-}
+};
 
 async function getAll(search) {
     const query = {};
@@ -23,6 +23,10 @@ async function getAll(search) {
 
 async function getById(id) {
     return Course.findById(id).lean();
+};
+
+async function getByIdRaw(id) {
+    return Course.findById(id);
 }
 
 async function create(course) {
@@ -56,6 +60,7 @@ module.exports = {
     getTop,
     create,
     getById,
+    getByIdRaw,
     deleteById,
     updateById,
     enrollUser

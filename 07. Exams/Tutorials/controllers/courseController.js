@@ -1,15 +1,16 @@
 const courseController = require('express').Router();
 const courseService = require('../services/courseService');
 
+const preloader = require('../middlewares/preload');
 const { paths, homePath, userLoginPath, courseDetailsPath } = require('../globalConstants');
 const { parseError } = require('../utils/parsers');
+const { isOwner } = require('../middlewares/guards');
 
-courseController.get(paths.courseController.actions.details, async (req, res) => {
-    const courseId = req.params.id;
+courseController.get(paths.courseController.actions.details, preloader(true), async (req, res) => {
     const userId = req.user._id;
+    const course = res.locals.course;
 
-    const course = await courseService.getById(courseId);
-    course.isOwner = course.owner.toString() == userId;
+    course.isOwner = course.owner.toString() == userId.toString();
     course.isEnrolled = course.users.map(x => x.toString()).includes(userId);
     
     res.render('courses/details', {
@@ -45,27 +46,15 @@ courseController.post(paths.courseController.actions.create, async (req, res) =>
     }
 });
 
-courseController.get(paths.courseController.actions.edit, async (req, res) => {
-    const courseId = req.params.id;
-    const course = await courseService.getById(courseId);
-
-    if(course.owner.toString() != req.user._id.toString()){
-        return res.redirect(userLoginPath);
-    }
-
+courseController.get(paths.courseController.actions.edit, preloader(), isOwner(), async (req, res) => {
     res.render('courses/edit', {
         title: 'Edit Course',
-        course
+        course: res.locals.course
     });
 });
 
-courseController.post(paths.courseController.actions.edit, async (req, res) => {
+courseController.post(paths.courseController.actions.edit, preloader(), isOwner(), async (req, res) => {
     const courseId = req.params.id;
-    const course = await courseService.getById(courseId);
-
-    if(course.owner.toString() != req.user._id.toString()){
-        return res.redirect(userLoginPath);
-    }
 
     try {        
         await courseService.updateById(courseId, req.body);
@@ -79,22 +68,17 @@ courseController.post(paths.courseController.actions.edit, async (req, res) => {
     }
 });
 
-courseController.get(paths.courseController.actions.delete, async (req, res) => {
+courseController.get(paths.courseController.actions.delete, preloader(), isOwner(), async (req, res) => {
     const courseId = req.params.id;
-    const course = await courseService.getById(courseId);
     
-    if(course.owner.toString() != req.user._id.toString()){
-        return res.redirect(userLoginPath);
-    }
-
     await courseService.deleteById(courseId);
     res.redirect(homePath);
 });
 
-courseController.get(paths.courseController.actions.enroll, async (req, res) => {
+courseController.get(paths.courseController.actions.enroll, preloader(), async (req, res) => {
     const courseId = req.params.id;
     const userId = req.user._id;
-    const course = await courseService.getById(courseId);
+    const course = res.locals.course;
    
     if(course.owner.toString() != userId
         && !course.users.map(x => x.toString()).includes(userId)){
