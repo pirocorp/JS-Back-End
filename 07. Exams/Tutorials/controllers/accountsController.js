@@ -4,14 +4,15 @@ const { body, validationResult } = require('express-validator');
 const userService = require('../services/userService');
 const { parseError } = require('../utils/parsers');
 const { sessionCookieName, paths, homePath } = require('../globalConstants');
+const { isGuest } = require('../middlewares/guards');
 
-accountsController.get(paths.accountsController.actions.login, (req, res) => {
+accountsController.get(paths.accountsController.actions.login, isGuest(), (req, res) => {
     res.render('accounts/login', {
         title: 'Login Page'
     });
 });
 
-accountsController.post(paths.accountsController.actions.login, async (req, res) => {
+accountsController.post(paths.accountsController.actions.login, isGuest(), async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
 
@@ -33,13 +34,13 @@ accountsController.post(paths.accountsController.actions.login, async (req, res)
     }
 });
 
-accountsController.get(paths.accountsController.actions.register, (req, res) => {
+accountsController.get(paths.accountsController.actions.register, isGuest(), (req, res) => {
     res.render('accounts/register', {
         title: 'Register Page'
     });
 });
 
-accountsController.post(paths.accountsController.actions.register,
+accountsController.post(paths.accountsController.actions.register, isGuest(),
     body('username')
         .isLength({ min: 5 }).withMessage('Username must be at least 5 characters long.')
         .isAlphanumeric().withMessage('Username may contain only letters and numbers.'),

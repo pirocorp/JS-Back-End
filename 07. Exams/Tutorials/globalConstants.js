@@ -14,6 +14,16 @@ const paths = {
             register: '/register',
             logout: '/logout'
         },
+    },
+    courseController: {
+        path: '/courses',
+        actions: {
+            create: '/create',
+            details: '/:id/details',
+            edit: '/:id/edit',
+            delete: '/:id/delete',
+            enroll: '/:id/enroll',
+        }
     }
 };
 
@@ -22,11 +32,13 @@ paths.fullPathWithId = (controller, action, id) => paths.fullPath(controller, ac
 
 const userLoginPath = paths.fullPath('accountsController', 'login');
 const homePath = '/';
+const courseDetailsPath = (courseId) => paths.fullPathWithId('courseController', 'details', courseId);
 
 module.exports = {
     sessionCookieName,
     paths,
     userLoginPath,
-    homePath
+    homePath,
+    courseDetailsPath
 }
 
