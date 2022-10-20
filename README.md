@@ -76,3 +76,5 @@ app.listen(port, (err) => {
 [PubSub and dependency injection on NodeJS app](https://softwareontheroad.com/ideal-nodejs-project-structure/)
 
 [NodeJS and TypeScript](https://wanago.io/2019/02/11/node-js-typescript-modules-file-system/)
+
+[API with NestJS](https://wanago.io/2020/12/07/api-nestjs-introduction-cqrs/)
