@@ -32,10 +32,29 @@ In traditional web development, you might only use model (i.e. ORM framework) fo
 **Domain Event (optional)** is an event class object that reflects the side effects of a business logic operation, such as **CreateUserEvent**. It’s very useful in microservices architecture.
 
 
+### Why we need so many objects? 
+
+- **DO vs Entity**: Sometimes what we stored in **DB** is not a **business entity** and it will need some aggregation or transformation. This is very common in **SQL** **databases** such as **1:N or N:N relationships**.
+- **DO vs DAO**: In DDD we can still utilize DAO to avoid write raw SQL queries even if you might use repository pattern.
+- **Entity vs DTO**: In most cases, when creating an entity, we won’t send all attributes in from UI or API such as primary key, IDs, created time, etc. Instead, we probably only allow users to send some non-key information such as name or title. This is way we normally separate **Entity** and **DTO**.
+- **Entity vs Value Object**: **Entity** is a primary object that has significance (normally has an ID) such as **User** while **Value Object** is more like a complex attribute such as **Phone** and **Location** which can have some **validation logic inside**.
+- **Aggregated Root**: In my word, you can assume an aggregate root is a top-level entity within its context. In a blog app, there might be some entities such as **Post**, **Comment**, **Like**, where **Post** is an **aggregated root** because **Comment** and **Like** normally **rely** on a **Post**.
 
 
+### Aggregated Root
+
+An **AGGREGATE** is a cluster of associated objects that we treat as a unit for the purpose of data changes. Each **AGGREGATE** has a root and a boundary. The boundary defines what is inside the **AGGREGATE**. The root is a single, specific **ENTITY** contained in the **AGGREGATE**.
+
+The root is the only member of the **AGGREGATE** that outside objects are allowed to hold references to.
 
 
+#### Aggregated Root Repository
+
+In the context of the repository pattern, **aggregate roots** are the only objects your client code loads from the **repository**.
+
+**The repository encapsulates access to child objects** - from a caller's perspective it automatically loads them, either at the same time the root is loaded or when they're actually needed (as with lazy loading).
+
+For example, you might have an **Order** object which encapsulates operations on multiple **LineItem** objects. Your client code would never load the **LineItem** objects directly, just the **Order** that contains them, which would be the **aggregate root** for that part of your domain.
 
 
 
