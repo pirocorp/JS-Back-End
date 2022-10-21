@@ -56,20 +56,34 @@ In the context of the repository pattern, **aggregate roots** are the only objec
 
 For example, you might have an **Order** object which encapsulates operations on multiple **LineItem** objects. Your client code would never load the **LineItem** objects directly, just the **Order** that contains them, which would be the **aggregate root** for that part of your domain.
 
-
 ![image](https://user-images.githubusercontent.com/34960418/197242336-ef53b98e-e04f-4e08-9b8a-effd4a70d275.png)
 
 
+### Layers
+
+Next, we will introduce some concepts regarding code structures.
+
+**Infrastructure Layer**: handle DB persistence, cache, external service, etc, such as **DAO** and **repository**.
+
+**Domain Layer**: handle business logics such as **domain services**, **entity (domain model)**, **domain events**, etc. Here business logic refers to some complex operations (e.g., money transfer).
+
+**Application Layer**: handle the orchestration of domain layers, such as application service. For example, call **user.register(userInput); ** **event.dispatch(userRegisterEvent);**
+
+**Business Logic places into two layers**, the **Domain layer** and the **Application Layer**, while they contain different kinds of business logic.
+
+**Domain Layer** implements the core, use-case independent business logic of the domain/system.
+**Application Layer** implements the use cases of the application based on the domain. A use case can be thought as a user interaction on the User Interface (UI).
+**Presentation Layer** contains the UI elements (pages, components) of the application.
+**Infrastructure Layer** supports other layer by implementing the abstractions and integrations to 3rd-party library and systems.
+
+![image](https://user-images.githubusercontent.com/34960418/197245158-7e79a851-c740-4087-87a8-7f79f4a70f52.png)
 
 
+Very general code infrastructure of a user management app.
 
+![image](https://user-images.githubusercontent.com/34960418/197244636-694622a4-63c3-4c49-abe3-b088022d188f.png)
 
-
-
-
-
-
-
+![image](https://user-images.githubusercontent.com/34960418/197244786-da679884-5255-440f-aac9-30c7b1456e40.png)
 
 
 
