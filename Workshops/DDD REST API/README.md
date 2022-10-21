@@ -79,7 +79,30 @@ Next, we will introduce some concepts regarding code structures.
 ![image](https://user-images.githubusercontent.com/34960418/197245158-7e79a851-c740-4087-87a8-7f79f4a70f52.png)
 
 
-Very general code infrastructure of a user management app.
+#### Core Building Blocks
+
+**DDD** mostly **focuses on the Domain & Application Layers** and ignores the Presentation and Infrastructure. They are seen as *details* and the business layers should not depend on them.
+
+
+##### Domain Layer Building Blocks
+
+- **Entity**: An Entity is an object with its own properties (state, data) and methods that implements the business logic that is executed on these properties. An entity is represented by its unique identifier (Id). Two entity object with different Ids are considered as different entities.
+- **Value Object**: A Value Object is another kind of domain object that is identified by its properties rather than a unique Id. That means two Value Objects with same properties are considered as the same object. Value objects are generally implemented as immutable and mostly are much simpler than the Entities.
+- **Aggregate & Aggregate Root**: An Aggregate is a cluster of objects (entities and value objects) bound together by an Aggregate Root object. The Aggregate Root is a specific type of an entity with some additional responsibilities.
+- **Repository (interface)**: A Repository is a collection-like interface that is used by the Domain and Application Layers to access to the data persistence system (the database). It hides the complexity of the DBMS from the business code. Domain Layer contains the interfaces of the repositories.
+- **Domain Service**: A Domain Service is a stateless service that implements core business rules of the domain. It is useful to implement domain logic that depends on multiple aggregate (entity) type or some external services.
+- **Specification**: A Specification is used to define named, reusable and combinable filters for entities and other business objects.
+- **Domain Event**: A Domain Event is a way of informing other services in a loosely coupled manner, when a domain specific event occurs.
+
+
+##### Application Layer Building Blocks
+
+- **Application Service**: An Application Service is a stateless service that implements use cases of the application. An application service typically gets and returns DTOs. It is used by the Presentation Layer. It uses and coordinates the domain objects to implement the use cases. A use case is typically considered as a **Unit Of Work**.
+- **Data Transfer Object (DTO)**: A DTO is a simple object without any business logic that is used to transfer state (data) between the Application and Presentation Layers.
+- **Unit of Work (UOW)**: A Unit of Work is an atomic work that should be done as a transaction unit. All the operations inside a UOW should be committed on success or rolled back on a failure.
+
+
+#### Very general code infrastructure of a user management app.
 
 ![image](https://user-images.githubusercontent.com/34960418/197244636-694622a4-63c3-4c49-abe3-b088022d188f.png)
 
