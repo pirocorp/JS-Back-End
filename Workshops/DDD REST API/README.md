@@ -1,4 +1,4 @@
-# Domain-Driven Design (DDD) with Node.js and MongoDB
+# Domain-Driven Design (DDD) with Node.js, MongoDB and TypeScript
 
 ## Common Concepts
 
