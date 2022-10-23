@@ -76,4 +76,6 @@ app.listen(port, (err) => {
 
 [NodeJS and TypeScript](https://wanago.io/2019/02/11/node-js-typescript-modules-file-system/)
 
+[TypeScript Express](https://wanago.io/courses/typescript-express-tutorial/)
+
 [API with NestJS](https://wanago.io/2020/12/07/api-nestjs-introduction-cqrs/)
