@@ -1,4 +1,7 @@
 import express from 'express';
+import { body } from 'express-validator'
+
+import BodyValidationMiddleware from '../common/middleware/body.validation.middleware';
 
 import { CommonRoutesConfig } from '../common/common.routes.config';
 import UsersController from './controllers/users.controller';
@@ -13,7 +16,11 @@ export class UsersRoutes extends CommonRoutesConfig {
         this.app.route(`/users`)
             .get(UsersController.listUsers)
             .post(
-                UsersMiddleware.validateRequiredUserBodyFields,
+                body('email').isEmail(),
+                body('password')
+                   .isLength({ min: 5 })
+                   .withMessage('Must include password (5+ characters)'),
+                BodyValidationMiddleware.verifyBodyFieldsErrors,
                 UsersMiddleware.validateSameEmailDoesntExist,
                 UsersController.createUser
             );
@@ -31,12 +38,28 @@ export class UsersRoutes extends CommonRoutesConfig {
             .delete(UsersController.removeUser);
 
         this.app.put(`/users/:userId`, [
-            UsersMiddleware.validateRequiredUserBodyFields,
+            body('email').isEmail(),
+            body('password')
+                .isLength({ min: 5 })
+                .withMessage('Must include password (5+ characters)'),
+            body('firstName').isString(),
+            body('lastName').isString(),
+            body('permissionFlags').isInt(),
+            BodyValidationMiddleware.verifyBodyFieldsErrors,
             UsersMiddleware.validateSameEmailBelongToSameUser,
             UsersController.put,
         ]);
         
         this.app.patch(`/users/:userId`, [
+            body('email').isEmail().optional(),
+            body('password')
+                .isLength({ min: 5 })
+                .withMessage('Password must be 5+ characters')
+                .optional(),
+            body('firstName').isString().optional(),
+            body('lastName').isString().optional(),
+            body('permissionFlags').isInt().optional(),
+            BodyValidationMiddleware.verifyBodyFieldsErrors,
             UsersMiddleware.validatePatchEmail,
             UsersController.patch,
         ]);

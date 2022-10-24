@@ -122,6 +122,7 @@ Next, we will introduce some concepts regarding code structures.
 
 - `mongoose` - To communicate with MongoDB, our back end will leverage an object data modeling (ODM) library called [Mongoose](https://mongoosejs.com/). While Mongoose is quite easy to use, it’s worth checking out the [documentation](https://mongoosejs.com/docs/guide.html) to learn all of the advanced possibilities it offers for real-world projects.
 
+- `express-validator` - quite stable, easy to use, and decently documented field validation tool.
 
 ### Modules
 
@@ -181,3 +182,8 @@ Removing network toptal-rest-series_default
 - ```useNewUrlParser``` - Without this set to ```true```, Mongoose prints a deprecation warning.
 - ```useUnifiedTopology``` - The Mongoose documentation recommends setting this to ```true``` to use a newer connection management engine.
 - ```serverSelectionTimeoutMS``` -  For the purpose of the UX of this demo project, a shorter time than the default of 30 seconds means that any readers who forget to start MongoDB before Node.js will see helpful feedback about it sooner, instead of an apparently unresponsive back end.
+
+
+### Model Validation
+
+To set the fields we want to validate, we’ll use the ```body()``` method that we’ll import at our `users.routes.config.ts`. The ```body()``` method will validate fields and generate an errors list—stored in the ```express.Request``` object—in case of failure.
