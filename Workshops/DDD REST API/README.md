@@ -36,6 +36,7 @@ In traditional web development, you might only use model (i.e. ORM framework) fo
 
 - **DO vs Entity**: Sometimes what we stored in **DB** is not a **business entity** and it will need some aggregation or transformation. This is very common in **SQL** **databases** such as **1:N or N:N relationships**.
 - **DO vs DAO**: In DDD we can still utilize DAO to avoid write raw SQL queries even if you might use repository pattern.
+- **DAO vs DTO**: A DAO is responsible for connecting to a defined database and performing CRUD operations; a DTO is an object that holds the raw data that the DAO will send to—and receive from—the database.
 - **Entity vs DTO**: In most cases, when creating an entity, we won’t send all attributes in from UI or API such as primary key, IDs, created time, etc. Instead, we probably only allow users to send some non-key information such as name or title. This is way we normally separate **Entity** and **DTO**.
 - **Entity vs Value Object**: **Entity** is a primary object that has significance (normally has an ID) such as **User** while **Value Object** is more like a complex attribute such as **Phone** and **Location** which can have some **validation logic inside**.
 - **Aggregated Root**: In my word, you can assume an aggregate root is a top-level entity within its context. In a blog app, there might be some entities such as **Post**, **Comment**, **Like**, where **Post** is an **aggregated root** because **Comment** and **Like** normally **rely** on a **Post**.
