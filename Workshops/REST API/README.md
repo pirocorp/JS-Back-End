@@ -44,48 +44,6 @@ The idea behind the project structure’s two folders (`common` and `users`) is 
 - **Controllers** for separating the route configuration from the code that finally (after any middleware) processes a route request, calls the above service functions if necessary, and gives a response to the client
 
 
-### Installing MongoDB As a Container
-
-The only thing readers need to do is [install Docker](https://docs.docker.com/engine/install/) and then [install Docker Compose](https://docs.docker.com/compose/install/). Once installed, running ```docker -v``` in a terminal should yield a Docker version number.
-
-Now, to run MongoDB, at the root of our project we’ll create a YAML file called `docker-compose.yml` containing the following:
-
-```yaml
-version: '3'
-services:
-  mongo:
-    image: mongo
-    volumes:
-      - ./data:/data/db
-    ports:
-      - "27017:27017"
-```
-
-Run MongoDB without having to install it locally
-
-```bash
-docker-compose up -d
-```
-
-![image](https://user-images.githubusercontent.com/34960418/197530551-e0ff30d4-a939-40f6-8227-a40e611a2932.png)
-
-The `up` command will start the defined container, listening on the standard MongoDB port of 27017. The `-d` switch will detach the command from the terminal. If everything runs without issue we should see a message like this:
-
-```
-Creating network "toptal-rest-series_default" with the default driver
-Creating toptal-rest-series_mongo_1 ... done
-```
-
-Now, if we need to shut down our MongoDB Docker container, we just need to run ```docker-compose down``` and we should see the following output:
-
-![image](https://user-images.githubusercontent.com/34960418/197531573-6a9a35ef-d390-430f-897f-341bc21b9180.png)
-
-```
-Stopping toptal-rest-series_mongo_1 ... done
-Removing toptal-rest-series_mongo_1 ... done
-Removing network toptal-rest-series_default
-```
-
 ### Configure Mongoose [Options](https://mongoosejs.com/docs/connections.html#options)
 
 - ```useNewUrlParser``` - Without this set to ```true```, Mongoose prints a deprecation warning.
