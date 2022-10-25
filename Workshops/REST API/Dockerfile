@@ -1,4 +1,4 @@
-FROM node:lts-slim
+FROM node:16.18-slim
 
 RUN mkdir -p /usr/src/app
 RUN mkdir -p /usr/src/app/dist
