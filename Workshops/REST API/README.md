@@ -12,7 +12,7 @@
 **Data Access Object (DAO)** is a model class provided by mongoose or other ORM with **DO** as the generic type, such as **Model\<IUser\>**.
 
 
-#### DTO
+### DTO
 
 **DTO** is a validation class object that we define to transfer/validate request attributes, such as **CreateUserDTO** and **UpdateUserDTO**. This is because updating users and creating users might need different attributes such as **ID**.
 
