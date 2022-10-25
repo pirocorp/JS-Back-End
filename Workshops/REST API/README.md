@@ -127,7 +127,7 @@ When working with Express.js, the documentation is a must-read, particularly its
 Create a file called Dockerfile (with no extension) in the project root:
 
 ```dockerfile
-FROM node:lts-slim
+FROM node:16.18-slim
 
 RUN mkdir -p /usr/src/app
 RUN mkdir -p /usr/src/app/dist
@@ -144,7 +144,7 @@ EXPOSE 3000
 CMD ["node", "./dist/app.js"]
 ```
 
-This configuration starts with the ```node:lts-slim``` [official image](https://hub.docker.com/_/node/) from Docker, and builds and runs our example REST API in a container. The configuration can change from case to case, but these generic-looking defaults work for our project.
+This configuration starts with the ```node:16.18-slim``` [official image](https://hub.docker.com/_/node/) from Docker, and builds and runs our example REST API in a container. The configuration can change from case to case, but these generic-looking defaults work for our project.
 
 To build the image, we just run this at the project root (replacing tag_your_image_here as desired):
 
