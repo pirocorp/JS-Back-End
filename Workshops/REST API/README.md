@@ -130,13 +130,13 @@ Create a file called Dockerfile (with no extension) in the project root:
 FROM node:lts-slim
 
 RUN mkdir -p /usr/src/app
+RUN mkdir -p /usr/src/app/dist
 
 WORKDIR /usr/src/app
 
 COPY . .
 
 RUN npm install
-
 RUN npm run build
 
 EXPOSE 3000
