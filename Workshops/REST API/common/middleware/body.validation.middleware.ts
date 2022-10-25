@@ -15,6 +15,6 @@ class BodyValidationMiddleware {
         
         next();
     }
-}
+};
 
 export default new BodyValidationMiddleware();

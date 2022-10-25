@@ -1,9 +1,12 @@
 import UsersDao from '../daos/users.dao';
+
 import { CRUD } from '../../common/interfaces/crud.interface';
+
 import { CreateUserDto } from '../dto/create.user.dto';
 import { PutUserDto } from '../dto/put.user.dto';
 import { PatchUserDto } from '../dto/patch.user.dto';
 import { IUser } from '../interfaces/user.interface';
+import { JwtUserDto } from '../dto/jwt.user.dto';
 
 class UsersService implements CRUD<IUser> {
     public async list(limit: number, page: number): Promise<IUser[]> {
@@ -32,6 +35,21 @@ class UsersService implements CRUD<IUser> {
 
     public async getUserByEmail(email: string): Promise<IUser | null> {
         return UsersDao.getUserByEmail(email);
+    };
+
+    public async getUserByEmailWithPassword(email: string): Promise<JwtUserDto | null> {
+        const user = await UsersDao.getUserByEmailWithPassword(email);
+
+        if(!user){
+            return null;
+        }
+
+        return {
+            _id: user._id.toString(),
+            email: user.email,
+            password: user.password,
+            permissionFlags: user.permissionFlags
+        };
     };
 }
 

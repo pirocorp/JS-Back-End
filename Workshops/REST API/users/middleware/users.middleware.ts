@@ -2,6 +2,7 @@ import express from 'express';
 import debug from 'debug';
 
 import userService from '../services/users.service';
+import mongoose from 'mongoose';
 
 const log: debug.IDebugger = debug('app:users-controller');
 
@@ -24,9 +25,7 @@ class UsersMiddleware {
         res: express.Response,
         next: express.NextFunction
     ) {
-        const user = await userService.getUserByEmail(req.body.email);
-
-        if (user && user._id.toString() === req.params.userId) {
+        if (res.locals.user._id.toString() === req.params.userId) {
             next();
         } else {
             res.status(400).send({ error: `Invalid email` });
@@ -53,13 +52,15 @@ class UsersMiddleware {
         res: express.Response,
         next: express.NextFunction
     ) {
-        const user = await userService.readById(req.params.userId);
+        const userId = req.params.userId;
+        const user = await userService.readById(userId);
 
         if (user) {
+            res.locals.user = user;
             next();
         } else {
             res.status(404).send({
-                error: `User ${req.params.userId} not found`,
+                error: `User ${userId} not found`,
             });
         }
     };
@@ -69,8 +70,35 @@ class UsersMiddleware {
         res: express.Response,
         next: express.NextFunction
     ) {
-        req.body.id = req.params.userId;
+        const userId = req.params.userId;
+
+        if(!mongoose.isValidObjectId(userId)){
+            res.status(404).send({
+                error: `User ${userId} not found`,
+            });
+
+            return;
+        }
+
+        req.body.id = userId;
         next();
+    };
+
+    public async userCantChangePermission(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        if (
+            'permissionFlags' in req.body &&
+            req.body.permissionFlags !== res.locals.user.permissionFlags
+        ) {
+            res.status(400).send({
+                errors: ['User cannot change permission flags'],
+            });
+        } else {
+            next();
+        }
     }
 };
 

@@ -1,4 +1,3 @@
-import { Types } from 'mongoose';
 import debug from 'debug';
 
 import mongooseService from '../../common/services/mongoose.service';
@@ -7,6 +6,7 @@ import { IUser } from '../interfaces/user.interface';
 import { CreateUserDto } from '../dto/create.user.dto';
 import { PatchUserDto } from '../dto/patch.user.dto';
 import { PutUserDto } from '../dto/put.user.dto';
+import { PermissionFlag } from '../../common/middleware/common.permissionflag.enum';
 
 const log: debug.IDebugger = debug('app:in-memory-dao');
 
@@ -34,7 +34,7 @@ class UsersDao {
     public async addUser(userFields: CreateUserDto): Promise<IUser> {
         const user = new this.User({
             ...userFields,
-            permissionFlags: 1, // Note that whatever the API consumer sends in for permissionFlags via userFields, we then override it with the value 1
+            permissionFlags: PermissionFlag.FREE_PERMISSION,
         });
 
         await user.save();        
@@ -74,7 +74,13 @@ class UsersDao {
 
     public async removeUserById(userId: string) {
         return this.User.deleteOne({ _id: userId }).exec();
-    }
+    };
+
+    public async getUserByEmailWithPassword(email: string): Promise<IUser | null> {
+        return (await this.User.findOne({ email: email })
+            .select('_id email permissionFlags +password')
+            .exec());
+    };
 };
 
 // Using the singleton pattern, this class will always provide the same instance—and, 

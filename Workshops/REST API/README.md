@@ -2,112 +2,19 @@
 
 ## Common Concepts
 
-### Objects
+### Data Object (DO)
 
-In traditional web development, you might only use model (i.e. ORM framework) for data hosting and DB persistency. In **DDD**, there are many objects: **Data Object (DO)**, **Data Access Object (DAO)**, **Entity (Domain Model)**, **Value Object**, **Aggregate Root**, **Data Transfer Object (DTO)**, **Domain Event**.
-
-
-#### Data Object (DO)
-
-**Data Object (DO)** is a data class we defined for mongoose schema. It reflects what we stored in the DB, such as **UserDO**.
+**Data Object (DO)** is a data class/interface we defined for mongoose schema. It reflects what we stored in the DB, such as **IUser**.
 
 
-#### Data Access Object (DAO)
+### Data Access Object (DAO)
 
-**Data Access Object (DAO)** is a model class provided by mongoose or other ORM with **DO** as the generic type, such as **Model\<UserDO\>**.
-
-
-#### Entity (Domain Model)
-
-**Entity (Domain Model)** is a business class object that we define to process business logics, such as **User**.
+**Data Access Object (DAO)** is a model class provided by mongoose or other ORM with **DO** as the generic type, such as **Model\<IUser\>**.
 
 
 #### DTO
 
 **DTO** is a validation class object that we define to transfer/validate request attributes, such as **CreateUserDTO** and **UpdateUserDTO**. This is because updating users and creating users might need different attributes such as **ID**.
-
-
-#### Domain Event (optional)
-
-**Domain Event (optional)** is an event class object that reflects the side effects of a business logic operation, such as **CreateUserEvent**. It’s very useful in microservices architecture.
-
-
-#### Why we need so many objects? 
-
-- **DO vs Entity**: Sometimes what we stored in **DB** is not a **business entity** and it will need some aggregation or transformation. This is very common in **SQL** **databases** such as **1:N or N:N relationships**.
-- **DO vs DAO**: In DDD we can still utilize DAO to avoid write raw SQL queries even if you might use repository pattern.
-- **DAO vs DTO**: A DAO is responsible for connecting to a defined database and performing CRUD operations; a DTO is an object that holds the raw data that the DAO will send to—and receive from—the database.
-- **Entity vs DTO**: In most cases, when creating an entity, we won’t send all attributes in from UI or API such as primary key, IDs, created time, etc. Instead, we probably only allow users to send some non-key information such as name or title. This is way we normally separate **Entity** and **DTO**.
-- **Entity vs Value Object**: **Entity** is a primary object that has significance (normally has an ID) such as **User** while **Value Object** is more like a complex attribute such as **Phone** and **Location** which can have some **validation logic inside**.
-- **Aggregated Root**: In my word, you can assume an aggregate root is a top-level entity within its context. In a blog app, there might be some entities such as **Post**, **Comment**, **Like**, where **Post** is an **aggregated root** because **Comment** and **Like** normally **rely** on a **Post**.
-
-
-#### Aggregated Root
-
-An **AGGREGATE** is a cluster of associated objects that we treat as a unit for the purpose of data changes. Each **AGGREGATE** has a root and a boundary. The boundary defines what is inside the **AGGREGATE**. The root is a single, specific **ENTITY** contained in the **AGGREGATE**.
-
-The root is the only member of the **AGGREGATE** that outside objects are allowed to hold references to.
-
-
-##### Aggregated Root Repository
-
-In the context of the repository pattern, **aggregate roots** are the only objects your client code loads from the **repository**.
-
-**The repository encapsulates access to child objects** - from a caller's perspective it automatically loads them, either at the same time the root is loaded or when they're actually needed (as with lazy loading).
-
-For example, you might have an **Order** object which encapsulates operations on multiple **LineItem** objects. Your client code would never load the **LineItem** objects directly, just the **Order** that contains them, which would be the **aggregate root** for that part of your domain.
-
-![image](https://user-images.githubusercontent.com/34960418/197242336-ef53b98e-e04f-4e08-9b8a-effd4a70d275.png)
-
-
-### Layers
-
-Next, we will introduce some concepts regarding code structures.
-
-**Infrastructure Layer**: handle DB persistence, cache, external service, etc, such as **DAO** and **repository**.
-
-**Domain Layer**: handle business logics such as **domain services**, **entity (domain model)**, **domain events**, etc. Here business logic refers to some complex operations (e.g., money transfer).
-
-**Application Layer**: handle the orchestration of domain layers, such as application service. For example, call **user.register(userInput); ** **event.dispatch(userRegisterEvent);**
-
-**Business Logic places into two layers**, the **Domain layer** and the **Application Layer**, while they contain different kinds of business logic.
-
-**Domain Layer** implements the core, use-case independent business logic of the domain/system.
-**Application Layer** implements the use cases of the application based on the domain. A use case can be thought as a user interaction on the User Interface (UI).
-**Presentation Layer** contains the UI elements (pages, components) of the application.
-**Infrastructure Layer** supports other layer by implementing the abstractions and integrations to 3rd-party library and systems.
-
-![image](https://user-images.githubusercontent.com/34960418/197245158-7e79a851-c740-4087-87a8-7f79f4a70f52.png)
-
-
-#### Core Building Blocks
-
-**DDD** mostly **focuses on the Domain & Application Layers** and ignores the Presentation and Infrastructure. They are seen as *details* and the business layers should not depend on them.
-
-
-##### Domain Layer Building Blocks
-
-- **Entity**: An Entity is an object with its own properties (state, data) and methods that implements the business logic that is executed on these properties. An entity is represented by its unique identifier (Id). Two entity object with different Ids are considered as different entities.
-- **Value Object**: A Value Object is another kind of domain object that is identified by its properties rather than a unique Id. That means two Value Objects with same properties are considered as the same object. Value objects are generally implemented as immutable and mostly are much simpler than the Entities.
-- **Aggregate & Aggregate Root**: An Aggregate is a cluster of objects (entities and value objects) bound together by an Aggregate Root object. The Aggregate Root is a specific type of an entity with some additional responsibilities.
-- **Repository (interface)**: A Repository is a collection-like interface that is used by the Domain and Application Layers to access to the data persistence system (the database). It hides the complexity of the DBMS from the business code. Domain Layer contains the interfaces of the repositories.
-- **Domain Service**: A Domain Service is a stateless service that implements core business rules of the domain. It is useful to implement domain logic that depends on multiple aggregate (entity) type or some external services.
-- **Specification**: A Specification is used to define named, reusable and combinable filters for entities and other business objects.
-- **Domain Event**: A Domain Event is a way of informing other services in a loosely coupled manner, when a domain specific event occurs.
-
-
-##### Application Layer Building Blocks
-
-- **Application Service**: An Application Service is a stateless service that implements use cases of the application. An application service typically gets and returns DTOs. It is used by the Presentation Layer. It uses and coordinates the domain objects to implement the use cases. A use case is typically considered as a **Unit Of Work**.
-- **Data Transfer Object (DTO)**: A **DTO** is a simple object without any business logic that is used to transfer state (data) between the **Application** and **Presentation** **Layers**.
-- **Unit of Work (UOW)**: A **Unit of Work** is an atomic work that should be done as a transaction unit. All the operations inside a UOW should be committed on success or rolled back on a failure.
-
-
-#### Very general code infrastructure of a user management app.
-
-![image](https://user-images.githubusercontent.com/34960418/197244636-694622a4-63c3-4c49-abe3-b088022d188f.png)
-
-![image](https://user-images.githubusercontent.com/34960418/197244786-da679884-5255-440f-aac9-30c7b1456e40.png)
 
 
 ## Implementation
@@ -123,6 +30,8 @@ Next, we will introduce some concepts regarding code structures.
 - `mongoose` - To communicate with MongoDB, our back end will leverage an object data modeling (ODM) library called [Mongoose](https://mongoosejs.com/). While Mongoose is quite easy to use, it’s worth checking out the [documentation](https://mongoosejs.com/docs/guide.html) to learn all of the advanced possibilities it offers for real-world projects.
 
 - `express-validator` - quite stable, easy to use, and decently documented field validation tool.
+
+- `dotenv` - An easy way to load variables from `.env` file into our app is to use a library called dotenv.
 
 ### Modules
 
@@ -187,3 +96,128 @@ Removing network toptal-rest-series_default
 ### Model Validation
 
 To set the fields we want to validate, we’ll use the ```body()``` method that we’ll import at our `users.routes.config.ts`. The ```body()``` method will validate fields and generate an errors list—stored in the ```express.Request``` object—in case of failure.
+
+
+### Authentication vs. Permissions (or “Authorization”) Flow
+
+Authentication is about who the request is from and authorization is about whether they are allowed to do what they’re requesting. `401 Unauthorized` is about authentication and `403 Forbidden` is about authorization.
+
+In this demo, we’ve picked an implementation that’s basic but scalable. It’s based on JWTs.
+
+A JWT consists of encrypted JSON with some non-authentication-related metadata, which in our case includes the user’s email address and permissions flags. The JSON will also contain a secret to verify the integrity of the metadata.
+
+The idea is to require clients to send a valid JWT inside each non-public request. This lets us verify that the client recently had valid credentials for the endpoint they want to use, without having to send the credentials themselves over the wire with each request.
+
+
+### Storing JWT Secrets
+
+To generate a JWT, we’ll need a JWT secret, which we’ll use to sign our generated JWTs and also to validate incoming JWTs from client requests. Rather than hard-code the value of the JWT secret within a TypeScript file, we’ll store it in a separate “environment variable” file, `.env`, which **should never be pushed to a code repository**.
+
+As is common practice, we’ve added an `.env.example` file to the repo to help developers understand which variables are required when creating the real `.env`. In our case, we want a variable called ```JWT_SECRET``` storing our JWT secret as a string. Readers who wait until the end of this article and use the final branch of the repo will need to remember to change these values locally.
+
+We don’t need to import the dotenv library because importing it in `app.ts` makes the contents of the `.env` file available throughout the app via the Node.js global object called ```process```.
+
+
+### Auth Controller
+
+What’s the difference between `refreshKey`, `refreshToken`, and `accessToken`? The `*Tokens` are sent to our API consumers with the idea being that the `accessToken` is used for any request beyond what’s available to the general public, and `refreshToken` is used to request a replacement for an expired `accessToken`. The `refreshKey`, on the other hand, is used to pass the salt variable—encrypted within the refreshToken—back to our refresh middleware.
+
+
+### JWT Middleware
+
+The `validRefreshNeeded()` function also verifies if the refresh token is correct for a specific user ID. If it is, then below we’ll reuse `authController.createJWT` to generate a new JWT for the user.
+
+We also have validJWTNeeded(), which validates whether the API consumer sent a valid JWT in the HTTP headers respecting the [convention](https://jwt.io/introduction) `Authorization: Bearer <token>`. (Yes, that’s another unfortunate “auth” conflation.)
+
+
+### Permission Flag Implementation
+
+Instead of creating several similar middleware functions, we’ll use the [factory pattern](https://refactoring.guru/design-patterns/factory-method) to create a special factory method (or factory function or simply factory). Our factory function will allow us to generate—at the time of route configuration—middleware functions to check for any permission flag needed. With that, we avoid having to manually duplicate our middleware function whenever we add a new permission flag.
+
+We want the users list to be accessible only by requests made by someone with admin permissions, but we still want the ability to create a new user to be public, as normal UX expectations flow.
+
+Our REST API business logic allows only users with PAID_PERMISSION to update their information at all. This may or may not align with the business needs of other projects: It’s just to test the difference between paid and free permission.
+
+
+### Automated Testing
+
+We’ll use `Mocha`, `Chai`, and `SuperTest` to create our tests:
+
+```bash
+npm i --save-dev chai mocha supertest @types/chai @types/express @types/mocha @types/supertest ts-node
+```
+
+Mocha will manage our application and run the tests, Chai will allow for more readable test expression, and SuperTest will facilitate end-to-end (E2E) testing by calling our API as a REST client would.
+
+The functions we’re passing to `before()` and `after()` get called before and after all the tests we’ll define by calling `it()` within the same `describe()` block. The function passed to `after()` takes a callback, `done`, which we ensure is only called once we’ve cleaned up both the app and its database connection.
+
+> Note: Without our `after()` tactic, Mocha will hang even after successful test completion. The advice is often to simply always call Mocha with `--exit` to avoid this, but there’s an (often unmentioned) caveat. If the test suite would hang for other reasons—like a misconstructed Promise in the test suite or the app itself—then with `--exit`, Mocha won’t wait and will report success anyway, adding a subtle complication to debugging.
+
+
+## Security 
+
+When working with Express.js, the documentation is a must-read, particularly its [security best practices](https://expressjs.com/en/advanced/best-practice-security.html). At minimum, it’s worth pursuing:
+
+- Configuring [TLS](https://expressjs.com/en/advanced/best-practice-security.html#use-tls) support
+- Adding [rate-limiting middleware](https://github.com/nfriedly/express-rate-limit)
+- Ensuring npm dependencies are secure (readers may want to start with npm audit or go deeper with [snyk](https://snyk.io/))
+- Using the [Helmet](https://helmetjs.github.io/) library to help protect against common security vulnerabilities
+
+
+## Containing Our REST API Project With Docker
+
+Create a file called Dockerfile (with no extension) in the project root:
+
+```dockerfile
+FROM node:lts-slim
+
+RUN mkdir -p /usr/src/app
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+RUN npm install
+
+RUN npm run build
+
+EXPOSE 3000
+
+CMD ["node", "./dist/app.js"]
+```
+
+This configuration starts with the ```node:lts-slim``` [official image](https://hub.docker.com/_/node/) from Docker, and builds and runs our example REST API in a container. The configuration can change from case to case, but these generic-looking defaults work for our project.
+
+To build the image, we just run this at the project root (replacing tag_your_image_here as desired):
+
+```bash
+docker build . -t tag_your_image_here
+```
+
+Then, one way to run our back end—assuming the exact same text replacement—is:
+
+```bash
+docker run -p 3000:3000 tag_your_image_here
+```
+
+## Start the application
+
+Create `.env` file in format as in `.env.example`.
+
+Start application with:
+
+```bash
+docker-compose up --build -d
+```
+
+Stop application with:
+
+```bash
+docker-compose down
+```
+
+Enter in stopped container: 
+
+```bash
+docker run -it --rm --entrypoint sh your_image_tag_here
+```

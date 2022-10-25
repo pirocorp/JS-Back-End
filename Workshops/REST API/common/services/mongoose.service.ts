@@ -3,6 +3,8 @@ import debug from 'debug';
 
 const log: debug.IDebugger = debug('app:mongoose-service');
 
+const dbHost: string = process.env.DB_HOST as string;
+
 class MongooseService {
     private count = 0;
     private mongooseOptions = {
@@ -20,10 +22,10 @@ class MongooseService {
     }
 
     public connectWithRetry = () => {
-        log('Attempting MongoDB connection (will retry if needed)');
+        log('Attempting MongoDB connection (will retry if needed)');       
 
         mongoose
-            .connect('mongodb://localhost:27017/api-db', this.mongooseOptions)
+            .connect(`mongodb://${dbHost}:27017/api-db`, this.mongooseOptions)
             .then(() => {
                 log('MongoDB is connected');
             })
