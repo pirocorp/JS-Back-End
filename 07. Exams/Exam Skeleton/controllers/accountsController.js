@@ -27,10 +27,7 @@ accountsController.post(paths.accountsController.actions.login, async (req, res)
         // TODO: add error display to actual template from assignment
         res.render('accounts/login', {
             title: 'Login Page',
-            errors,
-            body: {
-                username
-            }
+            errors
         });
     }
 });
