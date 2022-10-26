@@ -1,17 +1,24 @@
 const booksController = require('express').Router();
 const booksService = require('../services/bookService');
 
-const { hasUser } = require('../middlewares/guards');
+const preloader = require('../middlewares/bookPreload');
+const { hasUser, isOwner } = require('../middlewares/guards');
 const { paths, userLoginPath, bookDetailsPath } = require('../globalConstants');
 const { parseError } = require('../utils/parsers');
 
 booksController.get(paths.booksController.actions.details, async (req, res) => {
     const reviewId = req.params.id;
     const book = await booksService.getById(reviewId);
-
+   
     const hasUser = req.user != null
-    const isOwner = hasUser && book.owner == req.user._id;
-    const isWish = !isOwner && book.wishingList.some(x => x == req.user._id);
+    let isOwner = false;
+    let isWish = false;
+
+    if(hasUser){
+        const userId = req.user._id;
+        isOwner = hasUser && book.owner == userId;
+        isWish = !isOwner && book.wishingList.some(x => x == userId);
+    }
 
     res.render('books/details', {
         title: 'Create Review Page',
@@ -51,37 +58,20 @@ booksController.post(paths.booksController.actions.create, hasUser(), async (req
     }
 });
 
-booksController.get(paths.booksController.actions.edit, hasUser(), async (req, res) => {
-    const reviewId = req.params.id;
-    const book = await booksService.getById(reviewId);
-
-    const isOwner = book.owner.toString() == req.user._id.toString();
-
-    if(!isOwner){
-        res.redirect(userLoginPath);
-        return;
-    }
-
+booksController.get(paths.booksController.actions.edit, preloader(true), isOwner(), async (req, res) => {
     res.render('books/edit', {
         title: 'Create Review Page',
-        book
+        book: res.locals.book
     });
 });
 
-booksController.post(paths.booksController.actions.edit, hasUser(), async (req, res) => {
+booksController.post(paths.booksController.actions.edit, preloader(), isOwner(), async (req, res) => {
     const reviewId = req.params.id;
     const data = req.body;
-
-    const book = await booksService.getById(reviewId);
-    const isOwner = book.owner.toString() == req.user._id.toString();
-
-    if(!isOwner){
-        res.redirect(userLoginPath);
-        return;
-    }
+    const book = res.locals.book;
 
     try {
-        await booksService.update(reviewId, data);
+        await booksService.update(book, data);
         res.redirect(bookDetailsPath(reviewId));
     } catch (error) {
         res.render('books/edit', {
@@ -92,31 +82,23 @@ booksController.post(paths.booksController.actions.edit, hasUser(), async (req, 
     }
 });
 
-booksController.get(paths.booksController.actions.delete, hasUser(), async (req, res) => {
+booksController.get(paths.booksController.actions.delete, preloader(true), isOwner(), async (req, res) => {
     const reviewId = req.params.id;
-    const book = await booksService.getById(reviewId);
-
-    const isOwner = book.owner.toString() == req.user._id.toString();
-
-    if(!isOwner){
-        res.redirect(userLoginPath);
-        return;
-    }
 
     await booksService.deleteById(reviewId);
     res.redirect(paths.homeController.actions.catalog);
 });
 
-booksController.get(paths.booksController.actions.wish, async (req, res) => {
+booksController.get(paths.booksController.actions.wish, preloader(), hasUser(), async (req, res) => {
     const reviewId = req.params.id;
     const userId = req.user._id;
-    const book = await booksService.getById(reviewId);
+    const book = res.locals.book;
 
     const isOwner = book.owner == userId;
     const isWish = !isOwner && book.wishingList.some(x => x == userId);
 
     if(!isWish){
-        await booksService.wishBook(reviewId, userId);
+        await booksService.wishBook(book, userId);
     }
 
     res.redirect(bookDetailsPath(reviewId));

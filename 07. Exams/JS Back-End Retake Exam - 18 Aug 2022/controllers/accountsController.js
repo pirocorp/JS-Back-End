@@ -26,10 +26,7 @@ accountsController.post(paths.accountsController.actions.login, isGuest(), async
 
         res.render('accounts/login', {
             title: 'Login Page',
-            errors,
-            body: {
-                username
-            }
+            errors
         });
     }
 });

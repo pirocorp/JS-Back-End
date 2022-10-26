@@ -21,7 +21,21 @@ function isGuest() {
     };
 };
 
+function isOwner() {
+    return (req, res, next) => {
+        const isOwner = req.user && res.locals.book.owner.toString() == req.user._id.toString();
+
+        if(isOwner) {
+            res.locals.isOwner = true;
+            next();
+        } else {
+            res.redirect(userLoginPath);
+        }
+    };
+};
+
 module.exports = {
     hasUser,
-    isGuest
+    isGuest,
+    isOwner
 };

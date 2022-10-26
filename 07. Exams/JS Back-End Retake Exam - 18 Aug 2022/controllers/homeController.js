@@ -24,8 +24,6 @@ homeController.get(paths.homeController.actions.profile, hasUser(), async (req, 
     const userId = req.user._id;
     const books = await booksService.getWishedBooks(userId);
 
-    console.log(books);
-
     res.render('profile', {
         title: 'Profile Page',
         books
