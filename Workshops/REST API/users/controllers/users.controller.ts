@@ -7,7 +7,6 @@ import usersService from '../services/users.service';
 
 const log: debug.IDebugger = debug('app:users-controller');
 
-// TODO: Moving password hashing into service layer
 class UsersController {
     public async listUsers(req: express.Request, res: express.Response) {
         const users = await usersService.list(100, 0);
