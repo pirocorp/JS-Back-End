@@ -5,7 +5,7 @@ import debug from 'debug';
 const log: debug.IDebugger = debug('app:common-permission-middleware');
 
 class CommonPermissionMiddleware {
-    // Here’s the factory that will generate a middleware function that checks for whatever permission flag we pass it
+    // The factory that will generate a middleware function that checks for whatever permission flag we pass it
     public permissionFlagRequired(requiredPermissionFlag: PermissionFlag) {
         return (
             req: express.Request,
